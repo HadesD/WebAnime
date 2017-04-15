@@ -18,3 +18,14 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', 'HomeController@index');
+
+Route::group(['prefix' => 'watch'], function() {
+  Route::get('/', 'WatchController@index')->name('watch');
+
+  Route::group(['prefix' => '{id}'], function($id) {
+    Route::get('/', function() use ($id) {
+      print_r($id);
+      return 1;
+    });
+  });
+});
