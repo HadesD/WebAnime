@@ -22,4 +22,12 @@ class WatchController extends Controller
   {
     return 'ep';
   }
+  
+  public function getLink($url)
+  {
+    $getLinkController = new Watch\GetLinkController;
+    $getLinkController->setUrl($url);
+    
+    return $getLinkController->getResults();
+  }
 }

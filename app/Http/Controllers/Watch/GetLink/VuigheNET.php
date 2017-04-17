@@ -7,5 +7,6 @@ use App\Http\Controllers\Controller;
 
 class VuigheNET extends Controller
 {
-    //
+  
+  
 }
