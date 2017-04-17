@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Http\Controllers\Watch\GetLink;
+namespace App\Http\Controllers\API\Watch\GetLink;
 
 use Illuminate\Http\Request;
-use App\Http\Controllers\Watch\GetLinkController;
+use App\Http\Controllers\API\Watch\GetLinkController;
 //use Symfony\Component\DomCrawler\Crawler;
 use GuzzleHttp\Client;
 

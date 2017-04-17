@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Watch;
+namespace App\Http\Controllers\API\Watch;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
