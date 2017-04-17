@@ -9,6 +9,11 @@ class GetLinkController extends Controller
 {
   public $url;
   
+  public function canGetLink()
+  {
+    return true;
+  }
+  
   public function setUrl($url)
   {
     $this->url = $url;
@@ -16,6 +21,14 @@ class GetLinkController extends Controller
   
   public function getResults()
   {
+    if($this->canGetLink())
+    {
+      
+    }
+    else
+    {
+      
+    }
     return 1;
   }
 }
