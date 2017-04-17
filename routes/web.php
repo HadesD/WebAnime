@@ -21,6 +21,8 @@ Route::get('/home', 'HomeController@index');
 
 Route::group(['prefix' => 'watch'], function() {
   // Route::get('/', 'WatchController@index')->name('watch');
+  
+  Route::get('/get-link/{url}', 'Watch\GetLinkController@index');
 
   Route::get('/{film_id}/{film_slug?}', 'WatchController@watch');
 
