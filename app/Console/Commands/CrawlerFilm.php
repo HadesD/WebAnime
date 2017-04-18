@@ -4,6 +4,7 @@ namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
 use GuzzleHttp\Client;
+use App\Http\Controllers\API\Imgur\UploadIMGController;
 use App\Film;
 
 class CrawlerFilm extends Command
@@ -50,9 +51,11 @@ class CrawlerFilm extends Command
     public function handle()
     {
       $this->pickDomain = 0;
-      if (file_exists($this->nextPickDomain)) {
+      if (file_exists($this->nextPickDomain))
+      {
         $this->pickDomain += file_get_contents($this->nextPickDomain);
-        if ($this->pickDomain >= (count($this->listDomain)-1)) {
+        if ($this->pickDomain >= (count($this->listDomain)-1))
+        {
           $this->pickDomain = 0;
         }
       }
@@ -81,6 +84,8 @@ class CrawlerFilm extends Command
 
       $limit = 1;
       $offset = 0;
+
+      $uploadThumbs = new UploadIMGController;
 
       while (true)
       {
@@ -120,9 +125,11 @@ class CrawlerFilm extends Command
             [
               'name' => $film['name'],
               'description' => $film['description'],
+              'thumbnail' => $uploadThumbs->uploadURL($film['thumbnail']),
             ]
           );
         }
+        break;
 
         // Check end of job
         if ($offset >= $bar->getMaxSteps())
