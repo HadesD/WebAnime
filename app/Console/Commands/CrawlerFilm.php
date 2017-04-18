@@ -23,7 +23,9 @@ class CrawlerFilm extends Command
     protected $description = 'Crawler link film from another website';
 
     protected $listDomain, $pickDomain;
-  
+
+    private $nextPickDomain;
+
     /**
      * Create a new command instance.
      *
@@ -32,10 +34,12 @@ class CrawlerFilm extends Command
     public function __construct()
     {
       parent::__construct();
-      
+
       $this->listDomain = [
         'vuighe.net', //'anime47.com'
       ];
+
+      $this->nextPickDomain = storage_path('logs/CrawlerFilmNextDomain.log');
     }
 
     /**
@@ -45,7 +49,15 @@ class CrawlerFilm extends Command
      */
     public function handle()
     {
-      $this->pickDomain = rand(0, count($this->listDomain)-1);
+      $this->pickDomain = 0;
+      if (file_exists($this->nextPickDomain)) {
+        $this->pickDomain += file_get_contents($this->nextPickDomain);
+        if ($this->pickDomain >= (count($this->listDomain)-1)) {
+          $this->pickDomain = 0;
+        }
+      }
+      file_put_contents($this->nextPickDomain, $this->pickDomain+1);
+
       $funcName = studly_case((preg_replace('/[^A-Za-z0-9\-]/', '_', $this->listDomain[$this->pickDomain])));
       if(method_exists($this, $funcName))
       {
@@ -53,7 +65,7 @@ class CrawlerFilm extends Command
         $this->{$funcName}();
       }
     }
-  
+
     function VuigheNet()
     {
       $base_uri = 'http://'.$this->listDomain[$this->pickDomain];
@@ -66,10 +78,10 @@ class CrawlerFilm extends Command
           'Referer'          => $base_uri,
         ],
       ]);
-      
+
       $limit = 1;
       $offset = 0;
-      
+
       while (true)
       {
         $url = "/api/v2/films?limit={$limit}&offset={$offset}";
@@ -78,13 +90,13 @@ class CrawlerFilm extends Command
         {
           continue;
         }
-        
+
         $data = json_decode($res->getBody(), true);
         if (isset($data['data']) !== true)
         {
           continue;
         }
-        
+
         if ($offset === 0)
         {
           $bar = $this->output->createProgressBar($data['total']);
@@ -95,7 +107,7 @@ class CrawlerFilm extends Command
         {
           continue;
         }
-        
+
         // Update ProgressBar and new Request offset
         $bar->advance(count($data['data']));
         $offset += count($data['data']);
@@ -120,9 +132,9 @@ class CrawlerFilm extends Command
       }
       $bar->finish();
       $this->info("\n{$bar->getMaxSteps()} films is crawled.");
-      
+
     }
-  
+
     public function Anime47Com()
     {
       $base_uri = 'http://'.$this->listDomain[$this->pickDomain];
