@@ -122,4 +122,22 @@ class CrawlerFilm extends Command
       $this->info("\n{$bar->getMaxSteps()} films is crawled.");
       
     }
+  
+    public function Anime47Com()
+    {
+      $base_uri = 'http://'.$this->listDomain[$this->pickDomain];
+      $client = new Client([
+        'base_uri' => $base_uri,
+        'http_errors' => false,
+        'allow_redirects' => false,
+        'headers' => [
+          'X-Requested-With' => 'XMLHttpRequest',
+          'Referer'          => $base_uri,
+        ],
+      ]);
+      while(true)
+      {
+        $url = "/tim-nang-cao/?status=&season=&year=&sort=popular";
+      }
+    }
 }
