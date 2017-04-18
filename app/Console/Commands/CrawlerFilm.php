@@ -37,7 +37,8 @@ class CrawlerFilm extends Command
       parent::__construct();
 
       $this->listDomain = [
-        'vuighe.net', //'anime47.com'
+        //'vuighe.net',
+        'anime47.com',
       ];
 
       $this->nextPickDomain = storage_path('logs/CrawlerFilmNextDomain.log');
@@ -129,7 +130,6 @@ class CrawlerFilm extends Command
             ]
           );
         }
-        break;
 
         // Check end of job
         if ($offset >= $bar->getMaxSteps())
