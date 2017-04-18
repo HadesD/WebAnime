@@ -123,16 +123,18 @@ class CrawlerFilm extends Command
       // Update Database
       foreach ($data['data'] as $film)
       {
-        Film::updateOrCreate(
+        $film = Film::firstOrNew(
           [
             'source' => "{$base_uri}/{$film['slug']}",
           ],
           [
             'name' => $film['name'],
             'description' => $film['description'],
-            'thumbnail' => $uploadThumbs->uploadURL($film['thumbnail']),
           ]
         );
+        if (empty($film->thumbnail)) {
+          $film->thumbnail = $uploadThumbs->uploadURL($film['thumbnail']);
+        }
         sleep(5);
       }
 
@@ -234,16 +236,19 @@ class CrawlerFilm extends Command
 
         $bar2->advance();
 
-        Film::updateOrCreate(
+        $film = Film::firstOrNew(
           [
             'source' => $source,
           ],
           [
             'name' => $filmContent->filter('.movie-detail > h1 > .title-1')->text(),
             'description' => $filmContent->filter('#film-content > p')->first()->text(),
-            'thumbnail' => $uploadThumbs->uploadURL($filmContent->filter('.movie-image > .movie-l-img > img')->first()->attr('src')),
           ]
         );
+        if (empty($film->thumbnail)) {
+          $film->thumbnail = $uploadThumbs->uploadURL($filmContent->filter('.movie-image > .movie-l-img > img')->first()->attr('src'));
+        }
+        $film->save();
         sleep(5);
       });
       $this->info("\nPage {$page} is completed: {$bar2->getProgress()}/{$bar2->getMaxSteps()}\n");
