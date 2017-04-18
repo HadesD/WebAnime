@@ -18,6 +18,7 @@ class CreateEpisodesTable extends Migration
             $table->integer('film_id');
             $table->text('name');
             $table->string('source')->unique();
+            $table->bigInteger('views')->default(0);
             $table->timestamps();
         });
     }

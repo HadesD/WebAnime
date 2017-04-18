@@ -5,6 +5,8 @@ namespace App\Http\Controllers\API\Imgur;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use GuzzleHttp\Client;
+use GuzzleHttp\Exception\RequestException;
+use GuzzleHttp\Psr7;
 
 class UploadIMGController extends Controller
 {
@@ -22,16 +24,31 @@ class UploadIMGController extends Controller
   {
     $api_url = 'https://api.imgur.com/3/image.json';
     $app = $this->apps[rand(0, count($this->apps)-1)];
-    $img = file_get_contents($url);
 
     $client = new Client([
       'http_errors' => false,
+      'verify' => false,
+    ]);
+
+    try {
+      $resIMG = $client->request('GET', $url, []);
+
+      if ($resIMG->getStatusCode() !== 200)
+      {
+        return null;
+      }
+    } catch (RequestException $e) {
+      return null;
+    }
+
+
+
+    $img = (string)$resIMG->getBody();
+
+    $res = $client->request('POST', $api_url, [
       'headers' => [
         'Authorization' => "Client-ID {$app['client_id']}",
       ],
-    ]);
-
-    $res = $client->request('post', $api_url, [
       'form_params' => [
         'image' => base64_encode($img),
       ],
