@@ -133,6 +133,7 @@ class CrawlerFilm extends Command
             'thumbnail' => $uploadThumbs->uploadURL($film['thumbnail']),
           ]
         );
+        sleep(5);
       }
 
       // Check end of job
@@ -243,6 +244,7 @@ class CrawlerFilm extends Command
             'thumbnail' => $uploadThumbs->uploadURL($filmContent->filter('.movie-image > .movie-l-img > img')->first()->attr('src')),
           ]
         );
+        sleep(5);
       });
       $this->info("\nPage {$page} is completed: {$bar2->getProgress()}/{$bar2->getMaxSteps()}\n");
       $bar2->finish();

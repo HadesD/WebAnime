@@ -37,13 +37,15 @@ class UploadIMGController extends Controller
       {
         return null;
       }
+      $img = (string)$resIMG->getBody();
     } catch (RequestException $e) {
       return null;
     }
 
-
-
-    $img = (string)$resIMG->getBody();
+    if (isset($img) === false)
+    {
+      return null;
+    }
 
     $res = $client->request('POST', $api_url, [
       'headers' => [
