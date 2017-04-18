@@ -22,10 +22,7 @@ class CrawlerFilm extends Command
      */
     protected $description = 'Crawler link film from another website';
 
-    protected $listDomain;
-    private $pickDomain;
-  
-    protected $results;
+    protected $listDomain, $pickDomain;
   
     /**
      * Create a new command instance.
@@ -38,11 +35,6 @@ class CrawlerFilm extends Command
       
       $this->listDomain = [
         'vuighe.net', //'anime47.com'
-      ];
-      
-      $this->results = [
-        'name' => null,
-        'description' => null,
       ];
     }
 
@@ -64,49 +56,70 @@ class CrawlerFilm extends Command
   
     function VuigheNet()
     {
+      $base_uri = 'http://'.$this->listDomain[$this->pickDomain];
       $client = new Client([
-        'base_uri' => 'http://'.$this->listDomain[$this->pickDomain],
+        'base_uri' => $base_uri,
         'http_errors' => false,
         'allow_redirects' => false,
         'headers' => [
           'X-Requested-With' => 'XMLHttpRequest',
-          'Referer'          => $this->listDomain[$this->pickDomain],
+          'Referer'          => $base_uri,
         ],
       ]);
       
-      $limit = 0;
+      $limit = 1;
       $offset = 0;
       
       while (true)
       {
         $url = "/api/v2/films?limit={$limit}&offset={$offset}";
         $res = $client->request('GET', $url, []);
-        if ($res->getStatusCode() === 200)
+        if ($res->getStatusCode() !== 200)
         {
-          $data = json_decode($res->getBody(), true);
-          if (isset($data['data']))
-          {
-            if ($offset === 0)
-            {
-              $bar = $this->output->createProgressBar($data['total']);
-              //$bar->setFormat('verbose');
-              $limit = 40;
-            }
-            if (isset($bar) === true)
-            {
-              $bar->advance(count($data['data']));
-              $offset += count($data['data']);
-              
-              if ($offset >= $bar->getMaxSteps())
-              {
-                break;
-              }
-            }
-          }
+          continue;
+        }
+        
+        $data = json_decode($res->getBody(), true);
+        if (isset($data['data']) !== true)
+        {
+          continue;
+        }
+        
+        if ($offset === 0)
+        {
+          $bar = $this->output->createProgressBar($data['total']);
+          $limit = 40;
+        }
+
+        if (isset($bar) !== true)
+        {
+          continue;
+        }
+        
+        // Update ProgressBar and new Request offset
+        $bar->advance(count($data['data']));
+        $offset += count($data['data']);
+
+        // Update Database
+        foreach ($data['data'] as $film)
+        {
+          Film::updateOrCreate(
+            ['source' => "{$base_uri}/{$film['slug']}"],
+            [
+              'name' => $film['name'],
+              'description' => $film['description'],
+            ]
+          );
+        }
+
+        // Check end of job
+        if ($offset >= $bar->getMaxSteps())
+        {
+          break;
         }
       }
       $bar->finish();
-      $this->line("{$bar->getMaxSteps()} is crawled.");
+      $this->info("\n{$bar->getMaxSteps()} films is crawled.");
       
     }
 }
