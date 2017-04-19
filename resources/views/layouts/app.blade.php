@@ -8,7 +8,7 @@
   <!-- CSRF Token -->
   <meta name="csrf-token" content="{{ csrf_token() }}" />
 
-  <title>{{ config('app.name', 'Laravel') }}</title>
+  <title>@yield('title')</title>
 
   <!-- Styles -->
   <link href="{{ asset('Semantic-UI/dist/semantic.min.css') }}" rel="stylesheet" />
@@ -20,7 +20,7 @@
   </script>
 </head>
 <body>
-
+  @yield('content')
   <!-- Scripts -->
   <script src="{{ asset('js/jquery-3.2.1.min.js') }}"></script>
   <script src="{{ asset('Semantic-UI/dist/semantic.min.js') }}"></script>

@@ -38,7 +38,7 @@ class CrawlerFilm extends Command
     parent::__construct();
 
     $this->listDomain = [
-      //'vuighe.net',
+      'vuighe.net',
       'anime47.com',
     ];
 
@@ -63,7 +63,7 @@ class CrawlerFilm extends Command
     }
     file_put_contents($this->nextPickDomain, $this->pickDomain+1);
 
-    $funcName = studly_case((preg_replace('/[^A-Za-z0-9\-]/', '_', $this->listDomain[$this->pickDomain])));
+    $funcName = studly_case_domain($this->listDomain[$this->pickDomain]);
     if(method_exists($this, $funcName))
     {
       $this->line("{$this->listDomain[$this->pickDomain]} is being crawler.");
@@ -117,12 +117,12 @@ class CrawlerFilm extends Command
       }
 
       // Update ProgressBar and new Request offset
-      $bar->advance(count($data['data']));
       $offset += count($data['data']);
 
       // Update Database
       foreach ($data['data'] as $film)
       {
+        $bar->advance();
         $film = Film::firstOrNew(
           [
             'source' => "{$base_uri}/{$film['slug']}",
@@ -132,7 +132,7 @@ class CrawlerFilm extends Command
             'description' => $film['description'],
           ]
         );
-        if (empty($film->thumbnail)) {
+        if (empty($film->thumbnail) === true) {
           $film->thumbnail = $uploadThumbs->uploadURL($film['thumbnail']);
         }
         $film->save();
@@ -246,11 +246,10 @@ class CrawlerFilm extends Command
             'description' => $filmContent->filter('#film-content > p')->first()->text(),
           ]
         );
-        if (empty($film->thumbnail)) {
+        if (empty($film->thumbnail) === true) {
           $film->thumbnail = $uploadThumbs->uploadURL($filmContent->filter('.movie-image > .movie-l-img > img')->first()->attr('src'));
         }
         $film->save();
-        sleep(5);
       });
       $this->info("\nPage {$page} is completed: {$bar2->getProgress()}/{$bar2->getMaxSteps()}\n");
       $bar2->finish();
