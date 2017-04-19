@@ -42,10 +42,10 @@ class CrawlerEpisode extends Command
      */
     public function handle()
     {
-      $films = Film::whereNotNull('source')->orderBy('created_at', 'ASC')->take(10)->get();
+      $films = Film::whereNotNull('source')->where('source', 'like', '%vuighe.net%')->orderBy('created_at', 'ASC')->take(10)->get();
       
       $total = count($films);
-      if ($total <= 0)
+      if ($total === 0)
       {
         return;
       }
@@ -61,7 +61,7 @@ class CrawlerEpisode extends Command
         {
           continue;
         }
-        $this->{$funcName}($film->source);
+        call_user_func([$this, $funcName], $film);
       }
       
       $bar->finish();
@@ -69,8 +69,58 @@ class CrawlerEpisode extends Command
       $this->line("\nCrawler episode of {$total} films is completed");
     }
   
-  public function VuigheNet($url)
+  public function VuigheNet($film)
   {
+    $parse_url = parse_url($film->source);
+    $base_uri = 'http://'.$parse_url['host'];
+    $client = new Client([
+      'base_uri' => $base_uri,
+      'http_errors' => false,
+      'allow_redirects' => false,
+      'headers' => [
+        'X-Requested-With' => 'XMLHttpRequest',
+        'Referer'          => $base_uri,
+      ],
+    ]);
     
+    $res = $client->request('GET', $parse_url['path'], []);
+    if ($res->getStatusCode() !== 200)
+    {
+      return;
+    }
+    
+    preg_match('/id="filmPage".*?data-id="(\d+)"/msi', $res->getBody(), $film_id);
+    if (isset($film_id[1]) === false)
+    {
+      return;
+    }
+    
+    $episodes = $client->request('GET', "/api/v2/films/{$film_id[1]}/episodes?sort=name");// /api/v2/films/{$film_id}/seasons
+    if ($episodes->getStatusCode() !== 200)
+    {
+      return;
+    }
+    $ep_json = json_decode($episodes->getBody(), true);
+    if (isset($ep_json['data']) === false)
+    {
+      return;
+    }
+    $bar = $this->output->createProgressBar(count($ep_json['data']));
+    foreach ($ep_json['data'] as $data)
+    {
+      $bar->advance();
+      $source = $base_uri.$data['link'];
+      $episode = Episode::firstOrNew(
+        [
+          'source' => $source,
+        ],
+        [
+          'name' => $data['full_name'],
+          'film_id' => $film->id,
+        ]
+      );
+      $episode->save();
+    }
+    $bar->finish();
   }
 }

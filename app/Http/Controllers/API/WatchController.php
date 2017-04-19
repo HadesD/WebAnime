@@ -18,7 +18,8 @@ class WatchController extends Controller
     if (filter_var($url, FILTER_VALIDATE_URL)) {
       $class = $namespace.'\GetLink\\'.studly_case_domain(parse_url($url)['host']);
 
-      if (class_exists($class)) {
+      if (class_exists($class))
+      {
         $getLinkController = $class;
       }
     }

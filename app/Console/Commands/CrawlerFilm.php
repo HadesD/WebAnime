@@ -67,7 +67,7 @@ class CrawlerFilm extends Command
     if(method_exists($this, $funcName))
     {
       $this->line("{$this->listDomain[$this->pickDomain]} is being crawler.");
-      $this->{$funcName}();
+      call_user_func([$this, $funcName]);
     }
   }
 

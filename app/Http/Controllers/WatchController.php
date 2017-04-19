@@ -15,7 +15,7 @@ class WatchController extends Controller
     
     if (count($film) <= 0)
     {
-      //return 404;
+      return 1;
     }
     
     return $this->watch($film->id);
@@ -26,7 +26,7 @@ class WatchController extends Controller
     $episode = Episode::where('film_id', $film_id)->first();
     if (count($episode) <= 0)
     {
-      //return 40555;
+      return 2;
     }
     
     return $this->watchEpisode($film_id, $episode->id);
@@ -37,13 +37,13 @@ class WatchController extends Controller
     $film = Film::where('id', $film_id)->first();
     if (count($film) <= 0)
     {
-      //return 404;
+      return 3;
     }
     
     $episode = Episode::where('film_id', $film_id)->first();
     if (count($episode) <= 0)
     {
-      //return 404;
+      return 4;
     }
     
     return view('watch', [
