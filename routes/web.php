@@ -20,7 +20,7 @@ Auth::routes();
 Route::get('/home', 'HomeController@index');
 
 Route::group(['prefix' => 'watch'], function() {
-  // Route::get('/', 'WatchController@index')->name('watch');
+  Route::get('/', 'WatchController@index')->name('watch');
 
   Route::get('/{film_id}/{film_slug?}', 'WatchController@watch');
 
