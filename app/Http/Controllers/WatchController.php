@@ -18,10 +18,12 @@ class WatchController extends Controller
       return 1;
     }
     
-    return $this->watch($film->id);
+    return redirect()->route('watch.film', [
+      'film_id' => $film->id,
+    ]);
   }
 
-  public function watch($film_id)
+  public function watchFilm($film_id)
   {
     $episode = Episode::where('film_id', $film_id)->first();
     if (count($episode) <= 0)
@@ -29,7 +31,18 @@ class WatchController extends Controller
       return 2;
     }
     
-    return $this->watchEpisode($film_id, $episode->id);
+    $film = Film::where('id', $film_id)->first();
+    if (count($film) <= 0)
+    {
+      return 2.5;
+    }
+    
+    return redirect()->route('watch.episode', [
+      'film_id'      => $film_id,
+      'episode_id'   => $episode->id,
+      'film_slug'    => str_slug($film->name),
+      'episode_slug' => str_slug($episode->name),
+    ]);
   }
 
   public function watchEpisode($film_id, $episode_id)

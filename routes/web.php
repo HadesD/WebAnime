@@ -19,12 +19,12 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index');
 
-Route::group(['prefix' => 'watch'], function() {
-  Route::get('/', 'WatchController@index')->name('watch');
+Route::group(['prefix' => 'watch', 'as' => 'watch.'], function() {
+  Route::get('/', 'WatchController@index')->name('index');
 
-  Route::get('/{film_id}/{film_slug?}', 'WatchController@watch');
+  Route::get('/{film_id}/{film_slug?}', 'WatchController@watchFilm')->name('film');
 
-  Route::get('/{film_id}/{episode_id}/{film_slug?}/{episode_slug?}', 'WatchController@watchEpisode');
+  Route::get('/{film_id}/{episode_id}/{film_slug?}/{episode_slug?}', 'WatchController@watchEpisode')->name('episode');
 
   // Route::group(['prefix' => '{film_id}'], function($film_id) {
   //   Route::get('/', function() use ($film_id) {
