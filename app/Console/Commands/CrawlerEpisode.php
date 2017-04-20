@@ -42,14 +42,16 @@ class CrawlerEpisode extends Command
      */
     public function handle()
     {
-      $films = Film::whereNotNull('source')->where('source', 'like', '%vuighe.net%')->orderBy('created_at', 'ASC')->take(10)->get();
-      
+      $films = Film::whereNotNull('source')//->where('source', 'like', '%vuighe.net%')
+                  ->orderBy('created_at', 'ASC')//->take(10)
+                  ->get();
+
       $total = count($films);
       if ($total === 0)
       {
         return;
       }
-      
+
       $bar = $this->output->createProgressBar($total);
       $this->line("Crawler episode of {$total} films is started");
       foreach ($films as $film)
@@ -63,12 +65,12 @@ class CrawlerEpisode extends Command
         }
         call_user_func([$this, $funcName], $film);
       }
-      
+
       $bar->finish();
-      
+
       $this->line("\nCrawler episode of {$total} films is completed");
     }
-  
+
   public function VuigheNet($film)
   {
     $parse_url = parse_url($film->source);
@@ -82,19 +84,19 @@ class CrawlerEpisode extends Command
         'Referer'          => $base_uri,
       ],
     ]);
-    
+
     $res = $client->request('GET', $parse_url['path'], []);
     if ($res->getStatusCode() !== 200)
     {
       return;
     }
-    
+
     preg_match('/id="filmPage".*?data-id="(\d+)"/msi', $res->getBody(), $film_id);
     if (isset($film_id[1]) === false)
     {
       return;
     }
-    
+
     $episodes = $client->request('GET', "/api/v2/films/{$film_id[1]}/episodes?sort=name");// /api/v2/films/{$film_id}/seasons
     if ($episodes->getStatusCode() !== 200)
     {

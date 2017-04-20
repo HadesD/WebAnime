@@ -4,6 +4,7 @@ namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
 use App\Film;
+use App\Tag;
 use GuzzleHttp\Client;
 use Symfony\Component\DomCrawler\Crawler;
 use App\Http\Controllers\API\Imgur\UploadIMGController;
@@ -116,13 +117,16 @@ class CrawlerFilm extends Command
         continue;
       }
 
-      // Update ProgressBar and new Request offset
+      // Update new Request offset
       $offset += count($data['data']);
 
       // Update Database
       foreach ($data['data'] as $film)
       {
+        // Update ProgressBar
         $bar->advance();
+
+        // Update table Films
         $film = Film::firstOrNew(
           [
             'source' => "{$base_uri}/{$film['slug']}",
@@ -135,7 +139,21 @@ class CrawlerFilm extends Command
         if (empty($film->thumbnail) === true)
         {
           $film->thumbnail = $uploadThumbs->uploadURL($film['thumbnail']);
-          sleep(5);
+        }
+        // Update table Tags
+        if (isset($film['genres']['data']))
+        {
+          foreach ($film['genres']['data'] as $key => $genre)
+          {
+            $tag = Tag::firstOrNew(
+              [
+                'name' => $genre['name'],
+              ]
+            );
+            if (in_array($tag, $film->tags) === false) {
+              $film->tags[] = $tag;
+            }
+          }
         }
         $film->save();
       }
@@ -179,7 +197,7 @@ class CrawlerFilm extends Command
       $crawler = new Crawler((string)$res->getBody());
 
       $filmListBox = $crawler->filter('.col-lg-8 > .movie-list-index');
-      if (count($filmListBox) <= 0)
+      if (count($filmListBox) === 0)
       {
         continue;
       }
@@ -247,7 +265,8 @@ class CrawlerFilm extends Command
             'description' => $filmContent->filter('#film-content > p')->first()->text(),
           ]
         );
-        if (empty($film->thumbnail) === true) {
+        if (empty($film->thumbnail) === true)
+        {
           $film->thumbnail = $uploadThumbs->uploadURL($filmContent->filter('.movie-image > .movie-l-img > img')->first()->attr('src'));
         }
         $film->save();
