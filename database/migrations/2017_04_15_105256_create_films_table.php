@@ -19,7 +19,7 @@ class CreateFilmsTable extends Migration
             $table->text('description')->nullable();
             $table->string('thumbnail')->nullable();
             $table->string('source')->unique()->nullable();
-            $table->string('tags')->nullable();
+            $table->string('tags')->default(json_encode([]))->nullable();
             $table->timestamps();
         });
     }

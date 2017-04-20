@@ -121,7 +121,7 @@ class CrawlerFilm extends Command
       $offset += count($data['data']);
 
       // Update Database
-      foreach ($data['data'] as $film)
+      foreach ($data['data'] as $film_data)
       {
         // Update ProgressBar
         $bar->advance();
@@ -129,30 +129,40 @@ class CrawlerFilm extends Command
         // Update table Films
         $film = Film::firstOrNew(
           [
-            'source' => "{$base_uri}/{$film['slug']}",
+            'source' => "{$base_uri}/{$film_data['slug']}",
           ],
           [
-            'name' => $film['name'],
-            'description' => $film['description'],
+            'name' => $film_data['name'],
+            'description' => $film_data['description'],
           ]
         );
+        // $film->save();
+        // $film = Film::where('id', $film);
         if (empty($film->thumbnail) === true)
         {
-          $film->thumbnail = $uploadThumbs->uploadURL($film['thumbnail']);
+          $film->thumbnail = $uploadThumbs->uploadURL($film_data['thumbnail']);
         }
         // Update table Tags
-        if (isset($film['genres']['data']))
+        if (isset($film_data['genres']['data']) === true)
         {
-          foreach ($film['genres']['data'] as $key => $genre)
+          foreach ($film_data['genres']['data'] as $key => $genre_data)
           {
             $tag = Tag::firstOrNew(
               [
-                'name' => $genre['name'],
+                'name' => $genre_data['name'],
               ]
             );
-            if (in_array($tag, $film->tags) === false) {
-              $film->tags[] = $tag;
+            if (isset($film->tags) === false)
+            {
+              $film->tags = [];
             }
+            if (in_array($tag->id, $film->tags) === false)
+            {
+              $_film_tags = $film->tags;
+              $_film_tags[] = $tag->id;
+              $film->tags = $_film_tags;
+            }
+            $tag->save();
           }
         }
         $film->save();

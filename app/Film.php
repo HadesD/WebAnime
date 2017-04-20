@@ -10,13 +10,14 @@ class Film extends Model
     'name', 'description', 'thumbnail', 'source', 'tags',
   ];
 
-  public function getTagsAttribute()
+  public function getTagsAttribute($value)
   {
-    return json_decode($this->attributes['tags'], true);
+    return json_decode($value, true);
   }
 
   public function setTagsAttribute($value)
   {
+    $value = array_filter($value);
     $this->attributes['tags'] = json_encode($value);
   }
 }
