@@ -57,7 +57,7 @@ class CrawlerFilm extends Command
     if (file_exists($this->nextPickDomain))
     {
       $this->pickDomain += file_get_contents($this->nextPickDomain);
-      if ($this->pickDomain >= (count($this->listDomain)-1))
+      if ($this->pickDomain > (count($this->listDomain)-1))
       {
         $this->pickDomain = 0;
       }
@@ -136,8 +136,6 @@ class CrawlerFilm extends Command
             'description' => $film_data['description'],
           ]
         );
-        // $film->save();
-        // $film = Film::where('id', $film);
         if (empty($film->thumbnail) === true)
         {
           $film->thumbnail = $uploadThumbs->uploadURL($film_data['thumbnail']);
