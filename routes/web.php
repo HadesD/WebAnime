@@ -19,6 +19,10 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index');
 
+Route::group(['prefix' => 'dashboard', 'as' => 'dashboard.'], function () {
+  
+});
+
 Route::group(['prefix' => 'watch', 'as' => 'watch.'], function() {
   Route::get('/', 'WatchController@index')->name('index');
 
