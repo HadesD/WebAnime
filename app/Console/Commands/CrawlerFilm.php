@@ -132,11 +132,12 @@ class CrawlerFilm extends Command
             'description' => $film['description'],
           ]
         );
-        if (empty($film->thumbnail) === true) {
+        if (empty($film->thumbnail) === true)
+        {
           $film->thumbnail = $uploadThumbs->uploadURL($film['thumbnail']);
+          sleep(5);
         }
         $film->save();
-        sleep(5);
       }
 
       // Check end of job
