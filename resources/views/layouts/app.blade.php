@@ -13,6 +13,7 @@
   <!-- Styles -->
   <link href="{{ asset('Semantic-UI/dist/semantic.min.css') }}" rel="stylesheet" />
   <link href="{{ asset('css/app.css') }}" rel="stylesheet" />
+  <link href="{{ asset('css/app.hack.css') }}" rel="stylesheet" />
 
   <!-- Scripts -->
   <script type="text/javascript">
@@ -22,8 +23,9 @@
 <body>
   @yield('wrapper')
   <!-- Scripts -->
-  <script src="{{ asset('js/jquery-3.2.1.min.js') }}"></script>
-  <script src="{{ asset('Semantic-UI/dist/semantic.min.js') }}"></script>
-  <script src="{{ asset('js/app.js') }}"></script>
+  <script type="text/javascript" src="{{ asset('js/jquery-3.2.1.min.js') }}"></script>
+  <script type="text/javascript" src="{{ asset('Semantic-UI/dist/semantic.min.js') }}"></script>
+  <script type="text/javascript" src="{{ asset('js/app.js') }}"></script>
+  <script type="text/javascript" src="{{ asset('js/app.hack.js') }}"></script>
 </body>
 </html>
