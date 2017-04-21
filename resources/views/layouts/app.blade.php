@@ -20,7 +20,7 @@
   </script>
 </head>
 <body>
-  @yield('content')
+  @yield('wrapper')
   <!-- Scripts -->
   <script src="{{ asset('js/jquery-3.2.1.min.js') }}"></script>
   <script src="{{ asset('Semantic-UI/dist/semantic.min.js') }}"></script>
