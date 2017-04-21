@@ -7,3 +7,7 @@
 [submodule "laradock"]
   path = laradock
   url = https://github.com/laradock/laradock.git
+
+[submodule "video.js"]
+  path = public/video.js
+  url = https://github.com/videojs/video.js.git

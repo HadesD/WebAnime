@@ -7,7 +7,7 @@
       sdfsdf
     </div>
     <div class="four wide column">
-      <div class="ui pointing secondary stackable menu">
+      {{-- <div class="ui pointing secondary stackable menu">
         <a class="item active" data-tab="first">First</a>
         <a class="item" data-tab="second">Second</a>
       </div>
@@ -19,7 +19,7 @@
       </div>
       <div class="ui tab segment" data-tab="third">
         Third
-      </div>
+      </div> --}}
     </div>
   </div>
 @endsection
