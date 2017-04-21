@@ -31,7 +31,7 @@ class UploadIMGController extends Controller
     ]);
 
     try {
-      $resIMG = $client->request('GET', $url, []);
+      $resIMG = @$client->request('GET', $url, []);
 
       if ($resIMG->getStatusCode() !== 200)
       {
@@ -47,17 +47,20 @@ class UploadIMGController extends Controller
       return null;
     }
 
-    $res = $client->request('POST', $api_url, [
-      'headers' => [
-        'Authorization' => "Client-ID {$app['client_id']}",
-      ],
-      'form_params' => [
-        'image' => base64_encode($img),
-      ],
-    ]);
-
-    if ($res->getStatusCode() !== 200)
-    {
+    try {
+      $res = @$client->request('POST', $api_url, [
+        'headers' => [
+          'Authorization' => "Client-ID {$app['client_id']}",
+        ],
+        'form_params' => [
+          'image' => base64_encode($img),
+        ],
+      ]);
+      if ($res->getStatusCode() !== 200)
+      {
+        return null;
+      }
+    } catch (RequestException $e) {
       return null;
     }
 

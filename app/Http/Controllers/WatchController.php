@@ -25,14 +25,14 @@ class WatchController extends Controller
 
   public function watchFilm($film_id)
   {
-    $episode = Episode::where('film_id', $film_id)->first();
-    if (count($episode) <= 0)
+    $film = Film::find($film_id);
+    if (count($film) <= 0)
     {
       return 2;
     }
 
-    $film = Film::where('id', $film_id)->first();
-    if (count($film) <= 0)
+    $episode = $film->episodes()->first();
+    if (count($episode) <= 0)
     {
       return 2.5;
     }
@@ -47,13 +47,13 @@ class WatchController extends Controller
 
   public function watchEpisode($film_id, $episode_id)
   {
-    $film = Film::where('id', $film_id)->first();
+    $film = Film::find($film_id);
     if (count($film) <= 0)
     {
       return 3;
     }
 
-    $episode = Episode::where('film_id', $film_id)->first();
+    $episode = $film->episodes()->find($episode_id);
     if (count($episode) <= 0)
     {
       return 4;

@@ -10,6 +10,15 @@ class Film extends Model
     'name', 'description', 'thumbnail', 'source', 'tags',
   ];
 
+  /**
+   * Get all Episodes of film by column film_id in episodes table
+   * @return Object List Episodes
+   */
+  public function episodes()
+  {
+    return $this->hasMany('App\Episode');
+  }
+
   public function getTagsAttribute($value)
   {
     return json_decode($value, true);

@@ -1,11 +1,12 @@
 @extends('layouts.app')
 @section('wrapper')
-  <div class="ui borderless icon menu inverted fluid" style="border-radius:0;">
-    <a class="item">
+  <div class="ui borderless icon big menu inverted fluid" style="border-radius:0;">
+    <a class="item icon">
       <i class="content icon"></i>
     </a>
-    <a class="item">Browse</a>
-    <a class="item">Submit</a>
+    <a class="item icon">
+      <i class="heartbeat icon"></i>
+    </a>
     <div class="item">
       <div class="ui transparent inverted icon large input">
         <input placeholder="Search" type="text" />
@@ -13,14 +14,18 @@
       </div>
     </div>
     <div class="right menu">
-      <a class="item">Sign Up</a>
-      <a class="item">Help</a>
+      <a class="item icon">
+        <i class="alarm icon"></i>
+      </a>
+      <a class="item icon">
+        <i class="user icon"></i>
+      </a>
     </div>
   </div>
   <div class="ui container">
     @yield('content')
   </div>
   <div class="ui footer">
-    
+
   </div>
 @endsection

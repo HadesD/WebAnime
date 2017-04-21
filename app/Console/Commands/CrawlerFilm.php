@@ -93,7 +93,7 @@ class CrawlerFilm extends Command
     while (true)
     {
       $url = "/api/v2/films?limit={$limit}&offset={$offset}";
-      $res = $client->request('GET', $url, []);
+      $res = @$client->request('GET', $url, []);
       if ($res->getStatusCode() !== 200)
       {
         continue;
@@ -138,7 +138,7 @@ class CrawlerFilm extends Command
         );
         if (empty($film->thumbnail) === true)
         {
-          $film->thumbnail = $uploadThumbs->uploadURL($film_data['thumbnail']);
+          $film->thumbnail = @$uploadThumbs->uploadURL($film_data['thumbnail']);
         }
         // Update table Tags
         if (isset($film_data['genres']['data']) === true)
@@ -196,7 +196,7 @@ class CrawlerFilm extends Command
     while (true)
     {
       $url = "/tim-nang-cao/?status=&season=&year=&sort=&page={$page}";
-      $res = $client->request('GET', $url, []);
+      $res = @$client->request('GET', $url, []);
       if ($res->getStatusCode() !== 200)
       {
         continue;
@@ -237,8 +237,8 @@ class CrawlerFilm extends Command
         continue;
       }
       $bar2 = $this->output->createProgressBar(count($filmList));
-      $bar2->start();
       $this->info("\nPage {$page} is processing");
+      $bar2->start();
       $filmList->reduce(function (Crawler $node, $i) use ($client, $base_uri, $uploadThumbs, $bar2)
       {
         if (preg_match('/^\.(.*)/i', $node->attr('href'), $m) === false)
@@ -248,7 +248,7 @@ class CrawlerFilm extends Command
 
         $source = $base_uri.$m[1];
 
-        $filmData = $client->request('GET', $source, []);
+        $filmData = @$client->request('GET', $source, []);
         if ($filmData->getStatusCode() !== 200)
         {
           return;
@@ -275,7 +275,7 @@ class CrawlerFilm extends Command
         );
         if (empty($film->thumbnail) === true)
         {
-          $film->thumbnail = $uploadThumbs->uploadURL($filmContent->filter('.movie-image > .movie-l-img > img')->first()->attr('src'));
+          $film->thumbnail = @$uploadThumbs->uploadURL($filmContent->filter('.movie-image > .movie-l-img > img')->first()->attr('src'));
         }
         $film->save();
       });
