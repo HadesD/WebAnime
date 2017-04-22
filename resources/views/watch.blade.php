@@ -9,26 +9,21 @@
   }
   @media (max-width: 767px) and (min-width: 640px) {
     #player-video {
-      float: none;
-      /*width: 640px;*/
       height: 360px;
     }
   }
   @media (max-width: 639px) and (min-width: 480px) {
     #player-video {
-        /*width: 480px;*/
-        height: 270px;
+      height: 270px;
     }
   }
   @media (max-width: 639px) and (min-width: 375px) {
     #player-video {
-        /*width: 375px;*/
-        height: 211px;
+      height: 211px;
     }
   }
   @media (max-width: 639px) {
     #player-video {
-      /*width: 320px;*/
       height: 180px;
     }
   }
@@ -62,29 +57,38 @@
       <div class="ui tab segment" data-tab="third">
         Third
       </div> --}}
-      <div class="ui very relaxed items">
+      <div class="ui link items">
         <div class="item">
           <div class="ui tiny image">
-            <img src="/images/wireframe/image.png">
+            <img src="http://i.imacdn.com/vg/2017/03/13/2a1aa7b50c966d03_912152d234cd5374_9976614893972712154671.jpg">
           </div>
-          <div class="middle aligned content">
-            <a class="header">12 Years a Slave</a>
+          <div class="content">
+            <div class="header">T?p 1 - Some things will be there</div>
+            <div class="description">
+              <p>Views</p>
+            </div>
           </div>
         </div>
         <div class="item">
           <div class="ui tiny image">
-            <img src="/images/wireframe/image.png">
+            <img src="http://i.imacdn.com/vg/2017/03/13/2a1aa7b50c966d03_912152d234cd5374_9976614893972712154671.jpg">
           </div>
-          <div class="middle aligned content">
-            <a class="header">My Neighbor Totoro</a>
+          <div class="content">
+            <div class="header">Veronika Ossi</div>
+            <div class="description">
+              <p></p>
+            </div>
           </div>
         </div>
         <div class="item">
           <div class="ui tiny image">
-            <img src="/images/wireframe/image.png">
+            <img src="http://i.imacdn.com/vg/2017/03/13/2a1aa7b50c966d03_912152d234cd5374_9976614893972712154671.jpg">
           </div>
-          <div class="middle aligned content">
-            <a class="header">Watchmen</a>
+          <div class="content">
+            <div class="header">Jenny Hess</div>
+            <div class="description">
+              <p></p>
+            </div>
           </div>
         </div>
       </div>
