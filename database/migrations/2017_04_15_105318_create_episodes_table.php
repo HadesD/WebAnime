@@ -17,6 +17,7 @@ class CreateEpisodesTable extends Migration
             $table->increments('id');
             $table->integer('film_id');
             $table->text('name');
+            $table->string('thumbnail')->nullable();
             $table->string('source')->unique();
             $table->bigInteger('views')->default(0);
             $table->timestamps();
