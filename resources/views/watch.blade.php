@@ -57,40 +57,29 @@
       <div class="ui tab segment" data-tab="third">
         Third
       </div> --}}
-      <div class="ui link items">
+<!--       <div class="ui divided link items">
         <div class="item">
           <div class="ui tiny image">
             <img src="http://i.imacdn.com/vg/2017/03/13/2a1aa7b50c966d03_912152d234cd5374_9976614893972712154671.jpg">
           </div>
           <div class="content">
-            <div class="header">T?p 1 - Some things will be there</div>
-            <div class="description">
-              <p>Views</p>
-            </div>
-          </div>
-        </div>
-        <div class="item">
-          <div class="ui tiny image">
-            <img src="http://i.imacdn.com/vg/2017/03/13/2a1aa7b50c966d03_912152d234cd5374_9976614893972712154671.jpg">
-          </div>
-          <div class="content">
-            <div class="header">Veronika Ossi</div>
+            <div class="ui tiny header">Jenny Hess</div>
             <div class="description">
               <p></p>
             </div>
           </div>
         </div>
-        <div class="item">
-          <div class="ui tiny image">
-            <img src="http://i.imacdn.com/vg/2017/03/13/2a1aa7b50c966d03_912152d234cd5374_9976614893972712154671.jpg">
-          </div>
-          <div class="content">
-            <div class="header">Jenny Hess</div>
-            <div class="description">
-              <p></p>
-            </div>
-          </div>
-        </div>
+      </div> -->
+      <div class="ui inverted vertical small menu" style="border-radius:0;width:auto;">
+        <a class="active item">
+          Home
+        </a>
+        <a class="item">
+          Messages
+        </a>
+        <a class="item">
+          Friends
+        </a>
       </div>
     </div>
   </div>
