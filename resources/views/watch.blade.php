@@ -3,27 +3,32 @@
 @push('css')
   <link href="{{ asset('video.js/dist/video-js.css') }}" rel="stylesheet" />
   <style type="text/css">
-  #player-video {
+  #player-video,
+  #episode-tab {
     width: 100%;
     height: 460px;
   }
   @media (max-width: 767px) and (min-width: 640px) {
-    #player-video {
+    #player-video,
+    #episode-tab {
       height: 360px;
     }
   }
   @media (max-width: 639px) and (min-width: 480px) {
-    #player-video {
+    #player-video,
+    #episode-tab {
       height: 270px;
     }
   }
   @media (max-width: 639px) and (min-width: 375px) {
-    #player-video {
+    #player-video,
+    #episode-tab {
       height: 211px;
     }
   }
   @media (max-width: 639px) {
-    #player-video {
+    #player-video,
+    #episode-tab {
       height: 180px;
     }
   }
@@ -33,7 +38,7 @@
 @section('content')
   <!-- Player video and list film -->
   <div class="ui internally stackable grid">
-    <div class="twelve wide column">
+    <div class="twelve wide column" style="padding-left:0;padding-right:0;">
       <video id="player-video" class="video-js" controls preload="auto" poster="MY_VIDEO_POSTER.jpg" data-setup="{}">
         <source src="MY_VIDEO.mp4" type="video/mp4" />
         <source src="MY_VIDEO.webm" type="video/webm" />
@@ -42,8 +47,11 @@
           <a href="http://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a>
         </p>
       </video>
+      <h1 class="ui header">
+        {{ $film->name }}
+      </h1>
     </div>
-    <div class="four wide column">
+    <div class="four wide column" style="padding-left:0;padding-right:0;">
       {{-- <div class="ui pointing secondary stackable menu">
         <a class="item active" data-tab="first">First</a>
         <a class="item" data-tab="second">Second</a>
@@ -70,7 +78,7 @@
           </div>
         </div>
       </div> -->
-      <div class="ui inverted vertical small menu" style="border-radius:0;width:auto;">
+      <div id="episode-tab" class="ui inverted vertical small menu" style="border-radius:0;width:auto;">
         <a class="active item">
           Home
         </a>
