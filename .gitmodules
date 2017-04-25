@@ -1,13 +1,6 @@
 ;git submodule update --rebase --remote
 ;git submodule update --init --recursive
-;[submodule "Semantic-UI"]
-;  path = public/Semantic-UI
-;  url = https://github.com/Semantic-Org/Semantic-UI.git
-
 [submodule "laradock"]
   path = laradock
   url = https://github.com/laradock/laradock.git
 
-;[submodule "video.js"]
-;  path = public/video.js
-;  url = https://github.com/videojs/video.js.git
