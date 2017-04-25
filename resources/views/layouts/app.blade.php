@@ -11,7 +11,8 @@
   <title>@yield('title')</title>
 
   <!-- Styles -->
-  <link href="{{ asset('Semantic-UI/dist/semantic.min.css') }}" rel="stylesheet" />
+  <link href="{{ asset('libs/Semantic-UI/dist/semantic.min.css') }}" rel="stylesheet" />
+  <link href="{{ asset('libs/perfect-scrollbar/dist/css/perfect-scrollbar.min.css') }}" rel="stylesheet" />
   <link href="{{ asset('css/app.css') }}" rel="stylesheet" />
   @stack('css')
   <link href="{{ asset('css/app.hack.css') }}" rel="stylesheet" />
@@ -24,7 +25,8 @@
   @yield('wrapper')
   <!-- Scripts -->
   <script type="text/javascript" src="{{ asset('js/jquery-3.2.1.min.js') }}"></script>
-  <script type="text/javascript" src="{{ asset('Semantic-UI/dist/semantic.min.js') }}"></script>
+  <script type="text/javascript" src="{{ asset('libs/Semantic-UI/dist/semantic.min.js') }}"></script>
+  <script type="text/javascript" src="{{ asset('libs/perfect-scrollbar/dist/js/perfect-scrollbar.jquery.min.js') }}"></script>
   <script type="text/javascript" src="{{ asset('js/app.js') }}"></script>
   @stack('js')
   <script type="text/javascript" src="{{ asset('js/app.hack.js') }}"></script>

@@ -1,39 +1,44 @@
 @extends('layouts.app.home')
 @section('title', "{$episode->name} - {$film->name}")
 @push('css')
-  <link href="{{ asset('video.js/dist/video-js.css') }}" rel="stylesheet" />
+  <link href="{{ asset('libs/video.js/dist/video-js.css') }}" rel="stylesheet" />
   <style type="text/css">
-  #player-video,
-  #episode-tab {
-    width: 100%;
-    height: 460px;
-  }
-  @media (max-width: 767px) and (min-width: 640px) {
+    #episode-tab {
+      border-radius:0;
+      width:auto;
+      position:relative;
+      overflow:hidden;
+    }
     #player-video,
     #episode-tab {
-      height: 360px;
+      width: 100%;
+      height: 460px;
     }
-  }
-  @media (max-width: 639px) and (min-width: 480px) {
-    #player-video,
-    #episode-tab {
-      height: 270px;
+    @media (max-width: 767px) and (min-width: 640px) {
+      #player-video,
+      #episode-tab {
+        height: 360px;
+      }
     }
-  }
-  @media (max-width: 639px) and (min-width: 375px) {
-    #player-video,
-    #episode-tab {
-      height: 211px;
+    @media (max-width: 639px) and (min-width: 480px) {
+      #player-video,
+      #episode-tab {
+        height: 270px;
+      }
     }
-  }
-  @media (max-width: 639px) {
-    #player-video,
-    #episode-tab {
-      height: 180px;
+    @media (max-width: 639px) and (min-width: 375px) {
+      #player-video,
+      #episode-tab {
+        height: 211px;
+      }
     }
-  }
+    @media (max-width: 639px) {
+      #player-video,
+      #episode-tab {
+        height: 180px;
+      }
+    }
   </style>
-  <script type="text/javascript" src="{{ asset('video.js/dist/ie8/videojs-ie8.min.js') }}"></script>
 @endpush
 @section('content')
   <!-- Player video and list film -->
@@ -52,7 +57,7 @@
       </h1>
     </div>
     <div class="four wide column" style="padding-left:0;padding-right:0;">
-      {{-- <div class="ui pointing secondary stackable menu">
+      <!-- <div class="ui pointing secondary stackable menu">
         <a class="item active" data-tab="first">First</a>
         <a class="item" data-tab="second">Second</a>
       </div>
@@ -64,21 +69,8 @@
       </div>
       <div class="ui tab segment" data-tab="third">
         Third
-      </div> --}}
-<!--       <div class="ui divided link items">
-        <div class="item">
-          <div class="ui tiny image">
-            <img src="http://i.imacdn.com/vg/2017/03/13/2a1aa7b50c966d03_912152d234cd5374_9976614893972712154671.jpg">
-          </div>
-          <div class="content">
-            <div class="ui tiny header">Jenny Hess</div>
-            <div class="description">
-              <p></p>
-            </div>
-          </div>
-        </div>
       </div> -->
-      <div id="episode-tab" class="ui inverted vertical small menu" style="border-radius:0;width:auto;">
+      <div id="episode-tab" class="ui inverted vertical small menu">
         <a class="active item">
           <h4 class="ui inverted image header">
             <img src="http://i.imacdn.com/vg/2017/03/13/2a1aa7b50c966d03_912152d234cd5374_9976614893972712154671.jpg" class="ui rounded image" />
@@ -96,10 +88,53 @@
         <a class="item">
           Friends
         </a>
+        <a class="item">
+          Friends
+        </a>
+        <a class="item">
+          Friends
+        </a>
+        <a class="item">
+          Friends
+        </a>
+        <a class="item">
+          Friends
+        </a>
+        <a class="item">
+          Friends
+        </a>
+        <a class="item">
+          Friends
+        </a>
+        <a class="item">
+          Friends
+        </a>
+        <a class="item">
+          Friends
+        </a>
+        <a class="item">
+          Friends
+        </a>
+        <a class="item">
+          Friends
+        </a>
+        <a class="item">
+          Friends
+        </a>
+        <a class="item">
+          Friends
+        </a>
+        <a class="item">
+          Friends
+        </a>
       </div>
     </div>
   </div>
 @endsection
 @push('js')
-  <script type="text/javascript" src="{{ asset('video.js/dist/video.min.js') }}"></script>
+  <script type="text/javascript" src="{{ asset('libs/video.js/dist/ie8/videojs-ie8.min.js') }}"></script>
+  <script type="text/javascript" src="{{ asset('libs/video.js/dist/video.min.js') }}"></script>
+  <script type="text/javascript">
+    $('#episode-tab').perfectScrollbar();
+  </script>
 @endpush
