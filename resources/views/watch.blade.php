@@ -72,15 +72,19 @@
       </div> -->
       <div id="episode-tab" class="ui inverted vertical small menu">
         <a class="active item">
-          <h4 class="ui inverted image header">
-            <img src="http://i.imacdn.com/vg/2017/03/13/2a1aa7b50c966d03_912152d234cd5374_9976614893972712154671.jpg" class="ui rounded image" />
-            <div class="content">
-              {{ $episode->name }}
-              <div class="sub header">
-                Views: {{ number_format($episode->views) }}
+          <div class="ui grid">
+            <div class="row">
+              <div class="three wide column" style="padding-right:0;">
+                <img src="http://i.imacdn.com/vg/2017/03/13/2a1aa7b50c966d03_912152d234cd5374_9976614893972712154671.jpg" class="ui rounded image" />
+              </div>
+              <div class="thirteen wide column" style="padding-right:0;">
+                <h5 class="ui inverted header">
+                  {{ $episode->name }}
+                </h5>
+                <small>Views: {{ number_format($episode->views) }}</small>
               </div>
             </div>
-          </h4>
+          </div>
         </a>
         <a class="item">
           Messages
