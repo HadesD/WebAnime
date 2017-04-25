@@ -7,13 +7,16 @@
     <a class="item icon">
       <i class="heartbeat icon"></i>
     </a>
-    <div class="item">
+    <div class="mobile hidden item">
       <div class="ui transparent inverted icon large input">
         <input placeholder="Search" type="text" />
         <i class="search icon"></i>
       </div>
     </div>
     <div class="right menu">
+      <a class="mobile only item icon">
+        <i class="search icon"></i>
+      </a>
       <a class="item icon">
         <i class="alarm icon"></i>
       </a>

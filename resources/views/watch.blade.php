@@ -80,7 +80,15 @@
       </div> -->
       <div id="episode-tab" class="ui inverted vertical small menu" style="border-radius:0;width:auto;">
         <a class="active item">
-          Home
+          <h4 class="ui inverted image header">
+            <img src="http://i.imacdn.com/vg/2017/03/13/2a1aa7b50c966d03_912152d234cd5374_9976614893972712154671.jpg" class="ui rounded image" />
+            <div class="content">
+              {{ $episode->name }}
+              <div class="sub header">
+                Views: {{ number_format($episode->views) }}
+              </div>
+            </div>
+          </h4>
         </a>
         <a class="item">
           Messages

@@ -13,8 +13,8 @@
   <!-- Styles -->
   <link href="{{ asset('Semantic-UI/dist/semantic.min.css') }}" rel="stylesheet" />
   <link href="{{ asset('css/app.css') }}" rel="stylesheet" />
-  <link href="{{ asset('css/app.hack.css') }}" rel="stylesheet" />
   @stack('css')
+  <link href="{{ asset('css/app.hack.css') }}" rel="stylesheet" />
   <!-- Scripts -->
   <script type="text/javascript">
   window.Laravel = {!! json_encode(['csrfToken' => csrf_token()]) !!};
@@ -26,7 +26,7 @@
   <script type="text/javascript" src="{{ asset('js/jquery-3.2.1.min.js') }}"></script>
   <script type="text/javascript" src="{{ asset('Semantic-UI/dist/semantic.min.js') }}"></script>
   <script type="text/javascript" src="{{ asset('js/app.js') }}"></script>
-  <script type="text/javascript" src="{{ asset('js/app.hack.js') }}"></script>
   @stack('js')
+  <script type="text/javascript" src="{{ asset('js/app.hack.js') }}"></script>
 </body>
 </html>
