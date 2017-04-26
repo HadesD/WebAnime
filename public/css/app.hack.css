@@ -1,3 +1,6 @@
+[class^="ps-scrollbar"] {
+  z-index: 1;
+}
 /* Mobile */
 @media only screen and (max-width: 767px) {
   [class*="mobile hidden"],
