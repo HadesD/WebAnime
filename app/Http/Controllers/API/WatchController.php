@@ -4,6 +4,8 @@ namespace App\Http\Controllers\API;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Film;
+use App\Episode;
 
 class WatchController extends Controller
 {
@@ -29,5 +31,12 @@ class WatchController extends Controller
     $getLinkController->setUrl($url);
 
     return $getLinkController->getResults();
+  }
+  
+  public function watchFilm($film_id)
+  {
+    $film = Film::find($film_id);
+    
+    return $film->episodes;
   }
 }
