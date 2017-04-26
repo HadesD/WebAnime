@@ -11,7 +11,7 @@
         border-radius:0;
         width:auto;
         position:relative;
-        overflow:hidden;
+        overflow: hidden;
       }
       #player-video,
       #episode-list {
@@ -49,7 +49,7 @@
     <div id="film-wrapper" class="ui equal width internally stackable grid">
       <div class="row">
         <div class="column">
-          <video id="player-video" class="video-js vjs-matrix" controls preload="auto" :poster="thisEpisode.thumbnail" data-setup="{}" :src="thisEpisode.src">
+          <video id="player-video" class="video-js vjs-matrix" controls autoplay="true" preload="auto" :poster="thisEpisode.thumbnail" data-setup="{}" :src="thisEpisode.src">
             <source :src="thisEpisode.src" type="video/mp4" />
             <source v-if="thisEpisode.srcwebm" :src="thisEpisode.srcwebm" type="video/webm" />
             <p class="vjs-no-js">
@@ -74,7 +74,7 @@
           </div> -->
           <div id="episode-list" class="ui inverted vertical small menu">
             <template v-for="episode in episodes">
-              <a class="item" :class="{'active':episode.id==thisEpisode.id}" v-on:click="playEpisode(episode.id)" :data-episodeid="episode.id">
+              <a class="item" :href="'{{ route('watch.episode', ['film_id' => $film->id, 'episode_id' => '']) }}/'+episode.id+'/{{ $film->slug }}/'+episode.slug" v-link="this.href" onclick="return false;" :class="{'active':episode.id==thisEpisode.id}" v-on:click="playEpisode(episode.id)" :data-episodeid="episode.id">
                 <div class="ui equal width grid">
                   <div class="row">
                     <div class="three wide column" style="padding-right:0;" v-if="thisEpisode.thumbnail">
@@ -108,14 +108,13 @@
     </div>
   @endsection
   @push('js')
-    <script type="text/javascript" src="{{ asset('libs/video.js/dist/ie8/videojs-ie8.min.js') }}"></script> 
+    <!--[if lt IE 9]>
+      <script type="text/javascript" src="{{ asset('libs/video.js/dist/ie8/videojs-ie8.min.js') }}"></script>
+    <![endif]-->
     <script type="text/javascript" src="{{ asset('libs/video.js/dist/video.min.js') }}"></script>
     <script type="text/javascript">
       // Autoload
       var vjsPlayer;
-      $(function() {
-        vjsPlayer = videojs('player-video');
-      });
 
       // Ajax
       var thisEpisode = {
@@ -132,6 +131,9 @@
           thisEpisode: thisEpisode,
         },
       });
+      $(function() {
+        vjsPlayer = videojs(playerVideo.$el.id);
+      });
       var episodeList = new Vue({
         el: '#episode-list',
         mounted: function() {
@@ -139,11 +141,17 @@
             $.each( data, function( i, v ) {
               episodes.push(v);
             });
-            $('#episode-list').perfectScrollbar();
+            var epListWrapper = $(episodeList.$el);
+            setTimeout(function() {
+              epListWrapper.perfectScrollbar();
+              // scrollTop
+              var active = epListWrapper.find('.item.active');
+              epListWrapper.scrollTop(active.offset().top - active.offsetParent().offset().top);
+            }, 0);
           });
         },
         component: {
-          'template':this
+          'template': this,
         },
         data: {
           thisEpisode: thisEpisode,
@@ -152,11 +160,12 @@
         methods: {
           playEpisode: function(episodeid) {
             thisEpisode.id = episodeid;
-            
             $.get("{{ route('api.watch.getlink', ['url' => '']) }}/"+episodes[episodeid].source, function(data) {
-//               console.log(data);
-               thisEpisode.src = data['srcs'][0]['src'];
-               vjsPlayer.play();
+              if (data.s === false) {
+                return;
+              }
+              thisEpisode.src = data['srcs'][0]['src'];
+              vjsPlayer.play();
             });
           },
         },

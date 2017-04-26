@@ -35,12 +35,19 @@ class GetLinkController extends Controller
 
     if($this->canGetLink() === true)
     {
-      unset($this->results['m']);
-      $this->results['s'] = true;
+      if (empty($this->results['srcs']) === false)
+      {
+        $this->results['s'] = true;
+      }
+    }
+
+    if ($this->results['s'] === false)
+    {
+      unset($this->results['srcs']);
     }
     else
     {
-      unset($this->results['srcs']);
+      unset($this->results['m']);
     }
 
     return $this->results;

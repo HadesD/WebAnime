@@ -32,11 +32,13 @@ class WatchController extends Controller
 
     return $getLinkController->getResults();
   }
-  
+
   public function watchFilm($film_id)
   {
     $film = Film::find($film_id);
-    
-    return $film->episodes;
+
+    return $film->episodes()->get()->sortBy(function($episode){
+      return $episode->ordinal;
+    });
   }
 }

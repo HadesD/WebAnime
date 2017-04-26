@@ -40,8 +40,8 @@ class WatchController extends Controller
     return redirect()->route('watch.episode', [
       'film_id'      => $film_id,
       'episode_id'   => $episode->id,
-      'film_slug'    => str_slug($film->name, '-'),
-      'episode_slug' => str_slug($episode->name, '-'),
+      'film_slug'    => $film->slug,
+      'episode_slug' => $episode->slug,
     ]);
   }
 
