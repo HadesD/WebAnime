@@ -49,7 +49,7 @@
     <div id="film-wrapper" class="ui equal width internally stackable grid">
       <div class="row">
         <div class="column">
-          <video id="player-video" class="video-js vjs-matrix" controls preload="auto" :poster="thisEpisode.thumbnail" data-setup="{}">
+          <video id="player-video" class="video-js vjs-matrix" controls preload="auto" :poster="thisEpisode.thumbnail" data-setup="{}" :src="thisEpisode.src">
             <source :src="thisEpisode.src" type="video/mp4" />
             <source v-if="thisEpisode.srcwebm" :src="thisEpisode.srcwebm" type="video/webm" />
             <p class="vjs-no-js">
@@ -112,7 +112,10 @@
     <script type="text/javascript" src="{{ asset('libs/video.js/dist/video.min.js') }}"></script>
     <script type="text/javascript">
       // Autoload
-      var vjsPlayer = videojs('player-video');
+      var vjsPlayer;
+      $(function() {
+        vjsPlayer = videojs('player-video');
+      });
 
       // Ajax
       var thisEpisode = {
@@ -149,8 +152,12 @@
         methods: {
           playEpisode: function(episodeid) {
             thisEpisode.id = episodeid;
-            thisEpisode.src = 'sdfsdf';
-            vjsPlayer.play();
+            
+            $.get("{{ route('api.watch.getlink', ['url' => '']) }}/"+episodes[episodeid].source, function(data) {
+//               console.log(data);
+               thisEpisode.src = data['srcs'][0]['src'];
+               vjsPlayer.play();
+            });
           },
         },
       });
