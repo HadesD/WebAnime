@@ -49,9 +49,9 @@
     <div id="film-wrapper" class="ui equal width internally stackable grid">
       <div class="row">
         <div class="column">
-          <video id="player-video" class="video-js vjs-matrix" controls autoplay="true" preload="auto" :poster="thisEpisode.thumbnail" data-setup="{}" :src="thisEpisode.src">
-            <source :src="thisEpisode.src" type="video/mp4" />
-            <source v-if="thisEpisode.srcwebm" :src="thisEpisode.srcwebm" type="video/webm" />
+          <video id="player-video" class="video-js vjs-matrix" controls autoplay preload="auto" :poster="thisEpisode.thumbnail" data-setup="{}" :src="thisEpisode.src">
+            <source :src="thisEpisode.src" :type="thisEpisode.type ? thisEpisode.type : 'video/mp4'" />
+            <source :src="thisEpisode.srcwebm" type="video/webm" />
             <p class="vjs-no-js">
               To view this video please enable JavaScript, and consider upgrading to a web browser that
               <a href="http://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a>
@@ -80,7 +80,7 @@
                     <div class="three wide column" style="padding-right:0;" v-if="thisEpisode.thumbnail">
                       <img :src="thisEpisode.thumbnail" class="ui rounded image" />
                     </div>
-                    <div class="column" style="padding-right:0;">
+                    <div class="column" style="padding-right:5px;">
                       <h5 class="ui inverted header" style="margin-bottom: 0px;">
                         @{{ episode.name }}
                       </h5>
@@ -119,8 +119,9 @@
       // Ajax
       var thisEpisode = {
         id: {{ $episode->id }},
-        src: 'http://download.blender.org/peach/bigbuckbunny_movies/BigBuckBunny_320x180.mp4',
+        // src: 'http://download.blender.org/peach/bigbuckbunny_movies/BigBuckBunny_320x180.mp4',
         thumbnail: '{{ $film->thumbnail }}',
+        type: '',
       };
       var episodes = [];
 
@@ -165,6 +166,7 @@
                 return;
               }
               thisEpisode.src = data['srcs'][0]['src'];
+              thisEpisode.type = 'video/mp4';
               vjsPlayer.play();
             });
           },
