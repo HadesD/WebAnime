@@ -24,6 +24,7 @@
 <body>
   @yield('wrapper')
   <!-- Scripts -->
+  <script type="text/javascript" src="{{ asset('libs/vue.js/dist/vue.min.js') }}"></script>
   <script type="text/javascript" src="{{ asset('js/jquery-3.2.1.min.js') }}"></script>
   <script type="text/javascript" src="{{ asset('libs/Semantic-UI/dist/semantic.min.js') }}"></script>
   <script type="text/javascript" src="{{ asset('libs/perfect-scrollbar/dist/js/perfect-scrollbar.jquery.min.js') }}"></script>

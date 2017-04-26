@@ -71,7 +71,7 @@
         Third
       </div> -->
       <div id="episode-tab" class="ui inverted vertical small menu">
-        <a class="active item">
+        <a class="active item" v-for="episode in episodes">
           <div class="ui grid">
             <div class="row">
               <div class="three wide column" style="padding-right:0;">
@@ -79,57 +79,12 @@
               </div>
               <div class="thirteen wide column" style="padding-right:0;">
                 <h5 class="ui inverted header">
-                  {{ $episode->name }}
+                  @{{ episode.name }}
                 </h5>
-                <small>Views: {{ number_format($episode->views) }}</small>
+                <small>Views: @{{ episode.views }}</small>
               </div>
             </div>
           </div>
-        </a>
-        <a class="item">
-          Messages
-        </a>
-        <a class="item">
-          Friends
-        </a>
-        <a class="item">
-          Friends
-        </a>
-        <a class="item">
-          Friends
-        </a>
-        <a class="item">
-          Friends
-        </a>
-        <a class="item">
-          Friends
-        </a>
-        <a class="item">
-          Friends
-        </a>
-        <a class="item">
-          Friends
-        </a>
-        <a class="item">
-          Friends
-        </a>
-        <a class="item">
-          Friends
-        </a>
-        <a class="item">
-          Friends
-        </a>
-        <a class="item">
-          Friends
-        </a>
-        <a class="item">
-          Friends
-        </a>
-        <a class="item">
-          Friends
-        </a>
-        <a class="item">
-          Friends
         </a>
       </div>
     </div>
@@ -139,6 +94,20 @@
   <script type="text/javascript" src="{{ asset('libs/video.js/dist/ie8/videojs-ie8.min.js') }}"></script>
   <script type="text/javascript" src="{{ asset('libs/video.js/dist/video.min.js') }}"></script>
   <script type="text/javascript">
+    // Autoload
     $('#episode-tab').perfectScrollbar();
+    
+    // Vue.js Support
+    var episodeTab = new Vue({
+      el: '#episode-tab',
+      data: {
+        episodes: [
+          {
+            name: '{{ $episode->name }}',
+            views: {{ number_format($episode->views) }},
+          },
+        ],
+      },
+    });
   </script>
 @endpush
