@@ -2,6 +2,7 @@
   @section('title', "{$episode->name} - {$film->name}")
   @push('css')
     <link href="{{ asset('libs/video.js/dist/video-js.css') }}" rel="stylesheet" />
+    <link href="https://raw.githubusercontent.com/brightcove/videojs-thumbnails/master/videojs.thumbnails.css" rel="stylesheet" />
     <style type="text/css">
       #film-wrapper > .row > .column {
         padding-left:0;
@@ -67,7 +68,7 @@
           </div> -->
           <div id="episode-list" class="ui inverted vertical small menu">
             <template v-for="episode, index in episodes">
-              <a class="item" :href="'{{ route('watch.episode', ['film_id' => $film->id, 'episode_id' => '']) }}/'+episode.id+'/{{ $film->slug }}/'+episode.slug" v-link="this.href" onclick="return false;" :class="{'active':episode.id==thisEpisode.id}" v-on:click="playEpisode(index)" v-bind:data-episodeid="episode.id">
+              <a class="item" :href="'{{ route('watch.episode', ['film_id' => $film->id, 'episode_id' => '']) }}/'+episode.id+'/{{ $film->slug }}/'+episode.slug" onclick="return false;" :class="{'active':episode.id==thisEpisode.id}" v-on:click="playEpisode($event, index)" v-bind:data-episodeid="episode.id">
                 <div class="ui equal width grid">
                   <div class="row">
                     <div class="three wide column" style="padding-right:0;" v-if="thisEpisode.thumbnail">
@@ -105,6 +106,7 @@
       <script type="text/javascript" src="{{ asset('libs/video.js/dist/ie8/videojs-ie8.min.js') }}"></script>
     <![endif]-->
     <script type="text/javascript" src="{{ asset('libs/video.js/dist/video.min.js') }}"></script>
+    <script src="https://raw.githubusercontent.com/brightcove/videojs-thumbnails/master/videojs.thumbnails.js"></script>
     <script type="text/javascript">
       // Autoload
       var vjsPlayer;
@@ -152,9 +154,10 @@
           episodes: episodes,
         },
         methods: {
-          playEpisode: function(episodeid) {
-            thisEpisode.id = episodes[episodeid].id;
-            $.get("{{ route('api.watch.getlink', ['url' => '']) }}/"+episodes[episodeid].source, function(data) {
+          playEpisode: function(event, i) {
+            thisEpisode.id = episodes[i].id;
+            window.history.pushState('ff', 'ss', href);
+            $.get("{{ route('api.watch.getlink', ['url' => '']) }}/"+episodes[i].source, function(data) {
               if (data.s === false) {
                 return;
               }
