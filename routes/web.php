@@ -27,16 +27,4 @@ Route::group(['prefix' => 'watch', 'as' => 'watch.'], function() {
   Route::get('/{film_id}/{film_slug?}', 'WatchController@watchFilm')->where(['film_id' => '[0-9]+',])->name('film');
 
   Route::get('/{film_id}/{episode_id}/{film_slug?}/{episode_slug?}', 'WatchController@watchEpisode')->where(['film_id' => '[0-9]+', 'episode_id' => '[0-9]+',])->name('episode');
-
-  // Route::group(['prefix' => '{film_id}'], function($film_id) {
-  //   Route::get('/', function() use ($film_id) {
-  //     print_r($film_id);
-  //     return 1;
-  //   });
-  //
-  //   Route::get('/{eposide_id}', function($eposide_id) use ($film_id) {
-  //     print_r($id);
-  //     return 1;
-  //   });
-  // });
 });

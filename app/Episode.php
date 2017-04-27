@@ -27,6 +27,11 @@ class Episode extends Model
     $name = $this->attributes['name'];
 
     preg_match('/([0-9]+)/i', $name, $order);
+    
+    if (isset($order[1]) === false)
+    {
+      return;
+    }
 
     return intval($order[1]);
   }

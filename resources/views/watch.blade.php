@@ -49,14 +49,7 @@
     <div id="film-wrapper" class="ui equal width internally stackable grid">
       <div class="row">
         <div class="column">
-          <video id="player-video" class="video-js vjs-matrix" controls autoplay preload="auto" :poster="thisEpisode.thumbnail" data-setup="{}" :src="thisEpisode.src">
-            <source :src="thisEpisode.src" :type="thisEpisode.type ? thisEpisode.type : 'video/mp4'" />
-            <source :src="thisEpisode.srcwebm" type="video/webm" />
-            <p class="vjs-no-js">
-              To view this video please enable JavaScript, and consider upgrading to a web browser that
-              <a href="http://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a>
-            </p>
-          </video>
+          <video id="player-video" class="video-js vjs-matrix" controls autoplay preload="auto" v-bind:poster="thisEpisode.thumbnail" data-setup="{}" v-bind:src="thisEpisode.src"></video>
         </div>
         <div class="four wide column">
           <!-- <div class="ui pointing secondary stackable menu">
@@ -73,8 +66,8 @@
             Third
           </div> -->
           <div id="episode-list" class="ui inverted vertical small menu">
-            <template v-for="episode in episodes">
-              <a class="item" :href="'{{ route('watch.episode', ['film_id' => $film->id, 'episode_id' => '']) }}/'+episode.id+'/{{ $film->slug }}/'+episode.slug" v-link="this.href" onclick="return false;" :class="{'active':episode.id==thisEpisode.id}" v-on:click="playEpisode(episode.id)" :data-episodeid="episode.id">
+            <template v-for="episode, index in episodes">
+              <a class="item" :href="'{{ route('watch.episode', ['film_id' => $film->id, 'episode_id' => '']) }}/'+episode.id+'/{{ $film->slug }}/'+episode.slug" v-link="this.href" onclick="return false;" :class="{'active':episode.id==thisEpisode.id}" v-on:click="playEpisode(index)" v-bind:data-episodeid="episode.id">
                 <div class="ui equal width grid">
                   <div class="row">
                     <div class="three wide column" style="padding-right:0;" v-if="thisEpisode.thumbnail">
@@ -119,7 +112,7 @@
       // Ajax
       var thisEpisode = {
         id: {{ $episode->id }},
-        // src: 'http://download.blender.org/peach/bigbuckbunny_movies/BigBuckBunny_320x180.mp4',
+        //src: 'http://download.blender.org/peach/bigbuckbunny_movies/BigBuckBunny_320x180.mp4',
         thumbnail: '{{ $film->thumbnail }}',
         type: '',
       };
@@ -160,12 +153,13 @@
         },
         methods: {
           playEpisode: function(episodeid) {
-            thisEpisode.id = episodeid;
+            thisEpisode.id = episodes[episodeid].id;
             $.get("{{ route('api.watch.getlink', ['url' => '']) }}/"+episodes[episodeid].source, function(data) {
               if (data.s === false) {
                 return;
               }
               thisEpisode.src = data['srcs'][0]['src'];
+              $('#'+playerVideo.$el.id).attr('src', thisEpisode.src);
               thisEpisode.type = 'video/mp4';
               vjsPlayer.play();
             });
