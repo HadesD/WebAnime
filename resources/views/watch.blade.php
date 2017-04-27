@@ -2,7 +2,7 @@
   @section('title', "{$episode->name} - {$film->name}")
   @push('css')
     <link href="{{ asset('libs/video.js/dist/video-js.css') }}" rel="stylesheet" />
-    <link href="https://raw.githubusercontent.com/brightcove/videojs-thumbnails/master/videojs.thumbnails.css" rel="stylesheet" />
+    <link href="{{ asset('libs/video.js/dist/skins/videojs-flat-skin.css') }}" rel="stylesheet" />
     <style type="text/css">
       #film-wrapper > .row > .column {
         padding-left:0;
@@ -50,7 +50,7 @@
     <div id="film-wrapper" class="ui equal width internally stackable grid">
       <div class="row">
         <div class="column">
-          <video id="player-video" class="video-js vjs-matrix" controls autoplay preload="auto" v-bind:poster="thisEpisode.thumbnail" data-setup="{}" v-bind:src="thisEpisode.src"></video>
+          <video id="player-video" class="video-js vjs-dark-hades" controls autoplay preload="auto" v-bind:poster="thisEpisode.thumbnail" data-setup="{'playbackRates': [1, 1.5, 2]}" v-bind:src="thisEpisode.src"></video>
         </div>
         <div class="four wide column">
           <!-- <div class="ui pointing secondary stackable menu">
@@ -106,7 +106,6 @@
       <script type="text/javascript" src="{{ asset('libs/video.js/dist/ie8/videojs-ie8.min.js') }}"></script>
     <![endif]-->
     <script type="text/javascript" src="{{ asset('libs/video.js/dist/video.min.js') }}"></script>
-    <script src="https://raw.githubusercontent.com/brightcove/videojs-thumbnails/master/videojs.thumbnails.js"></script>
     <script type="text/javascript">
       // Autoload
       var vjsPlayer;
