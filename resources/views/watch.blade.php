@@ -156,18 +156,32 @@
         methods: {
           playEpisode: function(event, i) {
             thisEpisode.id = episodes[i].id;
-            window.history.pushState('ff', 'ss', href);
+            var target = $(event.target).closest('a');
+
+            // Current page Attr change
+            window.history.pushState(this.data, document.title, target.attr('href'));
+            document.title = target.find('h5').text();
+
+            $(playerVideo.$el).closest('.video-js').addClass('vjs-waiting');
+
+            // Start getlink
             $.get("{{ route('api.watch.getlink', ['url' => '']) }}/"+episodes[i].source, function(data) {
               if (data.s === false) {
                 return;
               }
+              // Update player
               thisEpisode.src = data['srcs'][0]['src'];
               $('#'+playerVideo.$el.id).attr('src', thisEpisode.src);
               thisEpisode.type = 'video/mp4';
-              vjsPlayer.play();
+              //vjsPlayer.play();
             });
           },
         },
       });
+      window.onpopstate = function(event) {
+        //episodeList.playEpisode(event,10);
+        console.log(JSON.stringify(event.state));
+        //alert("location: " + document.location + ", state: " + JSON.stringify(event.state));
+      };
     </script>
   @endpush
