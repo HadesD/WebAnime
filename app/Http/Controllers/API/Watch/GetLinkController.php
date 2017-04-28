@@ -15,7 +15,13 @@ class GetLinkController extends Controller
     $this->results = [
       'm'    => null, // Messageage
       's'    => false, // Success status
-      'srcs' => [],
+      'srcs' => [
+        /*[
+          'quality' => '360p',
+          'src' => 'link',
+          'type' => 'video/mp4',
+        ]*/
+      ],
     ];
   }
 

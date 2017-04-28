@@ -137,6 +137,7 @@ class CrawlerEpisode extends Command
       'headers' => [
         'X-Requested-With' => 'XMLHttpRequest',
         'Referer'          => $base_uri,
+        'Upgrade-Insecure-Requests' => 1,
       ],
     ]);
 

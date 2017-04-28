@@ -10,7 +10,7 @@ class Film extends Model
     'name', 'description', 'thumbnail', 'source', 'tags',
   ];
 
-  public $appends = ['slug'];
+  public $appends = ['slug', 'tags_name'];
 
   /**
    * Get all Episodes of film by column film_id in episodes table
@@ -35,5 +35,10 @@ class Film extends Model
   public function getSlugAttribute($value)
   {
     return str_slug($this->attributes['name'], '-');
+  }
+
+  public function getTagsNameAttribute($value)
+  {
+    return json_decode($this->attributes['tags'], true);
   }
 }
