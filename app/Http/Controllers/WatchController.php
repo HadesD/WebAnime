@@ -69,7 +69,7 @@ class WatchController extends Controller
     }
 
     return view('watch', [
-      'film' => $film,
+      'film'    => $film,
       'episode' => $episode,
     ]);
   }

@@ -283,6 +283,34 @@ class CrawlerFilm extends Command
         {
           $film->thumbnail = @$uploadThumbs->uploadURL($filmContent->filter('.movie-image > .movie-l-img > img')->first()->attr('src'));
         }
+        // Update table Tags
+        $catList = $filmContent->filter('.dd-cat a');
+        if (count($catList) > 0)
+        {
+          foreach($catList as $cat)
+          {
+            if (isset($cat->textContent) === false)
+            {
+              continue;
+            }
+            $tag = Tag::firstOrNew(
+              [
+                'name' => trim($cat->textContent),
+              ]
+            );
+            if (isset($film->tags) === false)
+            {
+              $film->tags = [];
+            }
+            if (in_array($tag->id, $film->tags) === false)
+            {
+              $_film_tags = $film->tags;
+              $_film_tags[] = $tag->id;
+              $film->tags = $_film_tags;
+            }
+            $tag->save();
+          }
+        }
         $film->save();
       });
       $this->info("\nPage {$currentPage} is completed: {$bar2->getProgress()}/{$bar2->getMaxSteps()}\n");

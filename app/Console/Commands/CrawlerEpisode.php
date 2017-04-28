@@ -125,4 +125,28 @@ class CrawlerEpisode extends Command
     }
     $bar->finish();
   }
+  
+  public function Anime47Com($film)
+  {
+    $parse_url = parse_url($film->source);
+    $base_uri = 'http://'.$parse_url['host'];
+    $client = new Client([
+      'base_uri' => $base_uri,
+      'http_errors' => false,
+      'allow_redirects' => false,
+      'headers' => [
+        'X-Requested-With' => 'XMLHttpRequest',
+        'Referer'          => $base_uri,
+      ],
+    ]);
+    
+    $res = $client->request('GET', $parse_url['path'], []);
+    if ($res->getStatusCode() !== 200)
+    {
+      return;
+    }
+    
+    $dom = new Crawler((string)$res->getBody());
+    
+  }
 }
