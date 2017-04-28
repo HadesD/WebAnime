@@ -78,7 +78,7 @@
                       <h5 class="ui inverted header" style="margin-bottom: 0px;">
                         @{{ episode.name }}
                       </h5>
-                      <small>Views: @{{ episode.views }}</small>
+                      <small>@lang('watch.views'): @{{ episode.views }}</small>
                     </div>
                   </div>
                 </div>
@@ -96,8 +96,18 @@
             {{ $tags->name }}
           @endforeach
         </div>
-        <div class="third wide column">
-          {{ $film->views }}
+        <div class="five wide column">
+          <div class="ui right aligned container">
+            <div class="ui small statistic">
+              <div class="value">
+                <i class="lightning icon"></i>
+                {{ number_format($film->views) }}
+              </div>
+              <div class="label">
+                @lang('watch.views')
+              </div>
+            </div>
+          </div>
         </div>
       </div>
       <div class="row">
@@ -120,7 +130,7 @@
       // Ajax
       var thisEpisode = {
         id: {{ $episode->id }},
-        //src: 'http://download.blender.org/peach/bigbuckbunny_movies/BigBuckBunny_320x180.mp4',
+        // src: 'http://download.blender.org/peach/bigbuckbunny_movies/BigBuckBunny_320x180.mp4',
         thumbnail: '{{ $film->thumbnail }}',
         type: '',
       };
