@@ -121,6 +121,9 @@ class CrawlerEpisode extends Command
           'film_id' => $film->id,
         ]
       );
+      if ($episode->views < $data['views']) {
+        $episode->views = $data['views'];
+      }
       $episode->save();
     }
     $bar->finish();
