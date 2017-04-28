@@ -73,7 +73,6 @@ class CrawlerEpisode extends Command
 
   public function VuigheNet($film)
   {
-    return;
     $parse_url = parse_url($film->source);
     $base_uri = 'http://'.$parse_url['host'];
     $client = new Client([
@@ -173,7 +172,7 @@ class CrawlerEpisode extends Command
       return;
     }
 
-    $servers->reduce(function (Crawler $node, $i) {
+    $servers->reduce(function (Crawler $node, $i) use ($film) {
       $source = $node->attr('href');
       if ((empty($source) === true) || (filter_var($source, FILTER_VALIDATE_URL) === false))
       {
