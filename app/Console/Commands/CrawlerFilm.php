@@ -187,7 +187,7 @@ class CrawlerFilm extends Command
 
     $uploadThumbs = new UploadIMGController;
 
-    $page = 35;
+    $page = 1;
 
     while (true)
     {
