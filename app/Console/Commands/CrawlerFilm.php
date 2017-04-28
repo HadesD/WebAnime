@@ -198,10 +198,10 @@ class CrawlerFilm extends Command
       {
         continue;
       }
-      
+
       // Update Process
       $page++;
-      
+
       $crawler = new Crawler((string)$res->getBody());
 
       $filmListBox = $crawler->filter('.col-lg-8 > .movie-list-index');
@@ -236,9 +236,9 @@ class CrawlerFilm extends Command
       $bar2 = $this->output->createProgressBar(count($filmList));
       $this->info("\nPage {$currentPage} is processing");
       $bar2->start();
-      $filmList->reduce(function (Crawler $node, $i) use ($client, $base_uri, $uploadThumbs, $bar2)
-      {
-        if (preg_match('/^\.(.*)/i', $node->attr('href'), $m) === false)
+      $filmList->reduce(function (Crawler $node, $i) use ($client, $base_uri, $uploadThumbs, $bar2) {
+        preg_match('/^\.(.*)/i', $node->attr('href'), $m);
+        if (isset($m[1]) === false)
         {
           return;
         }
@@ -260,7 +260,7 @@ class CrawlerFilm extends Command
           $this->error("\nSource {$source} is not has a info.");
           return;
         }
-        
+
         if (count($filmContent->filter('.movie-detail > h1 > .title-1')) === 0)
         {
           $this->error("\nSource {$source} is not has a title.");

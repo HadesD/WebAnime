@@ -43,8 +43,8 @@ class CrawlerEpisode extends Command
   public function handle()
   {
     $films = Film::whereNotNull('source')//->where('source', 'like', '%vuighe.net%')
-    ->orderBy('created_at', 'ASC')//->take(10)
-    ->get();
+      ->orderBy('created_at', 'ASC')//->take(10)
+      ->get();
 
     $total = count($films);
     if ($total === 0)
@@ -73,6 +73,7 @@ class CrawlerEpisode extends Command
 
   public function VuigheNet($film)
   {
+    return;
     $parse_url = parse_url($film->source);
     $base_uri = 'http://'.$parse_url['host'];
     $client = new Client([
@@ -125,7 +126,7 @@ class CrawlerEpisode extends Command
     }
     $bar->finish();
   }
-  
+
   public function Anime47Com($film)
   {
     $parse_url = parse_url($film->source);
@@ -139,14 +140,57 @@ class CrawlerEpisode extends Command
         'Referer'          => $base_uri,
       ],
     ]);
-    
+
     $res = $client->request('GET', $parse_url['path'], []);
     if ($res->getStatusCode() !== 200)
     {
       return;
     }
-    
+
     $dom = new Crawler((string)$res->getBody());
-    
+    $btns = $dom->filter('.btn-block a');
+    if (count($btns) === 0)
+    {
+      return;
+    }
+
+    preg_match('/^\.(.*)/i', $btns->last()->attr('href'), $m);
+    if (isset($m[1]) === false)
+    {
+      return;
+    }
+
+    $res = $client->request('GET', $m[1], []);
+    if ($res->getStatusCode() !== 200)
+    {
+      return;
+    }
+
+    $dom = new Crawler((string)$res->getBody());
+    $servers = $dom->filter('.server a');
+    if (count($servers) === 0)
+    {
+      return;
+    }
+
+    $servers->reduce(function (Crawler $node, $i) {
+      $source = $node->attr('href');
+      if ((empty($source) === true) || (filter_var($source, FILTER_VALIDATE_URL) === false))
+      {
+        return;
+      }
+
+      // Insert/Update Episode to database
+      $episode = Episode::firstOrNew(
+        [
+          'source' => $source,
+        ],
+        [
+          'name' => trim($node->text()),
+          'film_id' => $film->id,
+        ]
+      );
+      $episode->save();
+    });
   }
 }

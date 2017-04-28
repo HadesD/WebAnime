@@ -18,13 +18,18 @@ Auth::routes();
 Route::get('/home', 'HomeController@index');
 
 Route::group(['prefix' => 'dashboard', 'as' => 'dashboard.'], function () {
-  
+
 });
 
 Route::group(['prefix' => 'watch', 'as' => 'watch.'], function() {
-  Route::get('/', 'WatchController@index')->name('index');
+  Route::get('/', 'WatchController@index')
+    ->name('index');
 
-  Route::get('/{film_id}/{film_slug?}', 'WatchController@watchFilm')->where(['film_id' => '[0-9]+',])->name('film');
+  Route::get('/{film_id}/{film_slug?}', 'WatchController@watchFilm')
+    ->where(['film_id' => '\s*[0-9]+',])
+    ->name('film');
 
-  Route::get('/{film_id}/{episode_id}/{film_slug?}/{episode_slug?}', 'WatchController@watchEpisode')->where(['film_id' => '[0-9]+', 'episode_id' => '[0-9]+',])->name('episode');
+  Route::get('/{film_id}/{episode_id}/{film_slug?}/{episode_slug?}', 'WatchController@watchEpisode')
+    ->where(['film_id' => '\s*[0-9]+', 'episode_id' => '\s*[0-9]+',])
+    ->name('episode');
 });
