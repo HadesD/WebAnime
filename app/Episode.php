@@ -6,16 +6,13 @@ use Illuminate\Database\Eloquent\Model;
 
 class Episode extends Model
 {
+  protected $hidden = ['source', 'updated_at', 'created_at'];
+
   protected $fillable = [
     'film_id', 'name', 'source',
   ];
 
   public $appends = ['slug', 'ordinal'];
-
-  public function getSourceAttribute($value)
-  {
-    return base64_encode($value);
-  }
 
   public function getSlugAttribute($value)
   {
@@ -27,7 +24,7 @@ class Episode extends Model
     $name = $this->attributes['name'];
 
     preg_match('/([0-9]+)/i', $name, $order);
-    
+
     if (isset($order[1]) === false)
     {
       return;
@@ -35,7 +32,7 @@ class Episode extends Model
 
     return intval($order[1]);
   }
-  
+
   public function film()
   {
     return $this->belongsTo('App\Film');

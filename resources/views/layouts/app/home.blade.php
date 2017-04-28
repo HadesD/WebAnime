@@ -4,7 +4,7 @@
     <a class="item icon">
       <i class="content icon"></i>
     </a>
-    <a class="item icon">
+    <a class="item icon" href="{{ route('watch.index') }}">
       <i class="heartbeat icon"></i>
     </a>
     <div class="mobile hidden item">

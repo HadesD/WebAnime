@@ -89,9 +89,15 @@
       </div>
       <div class="row">
         <div class="column">
-          <h1 class="ui dividing header">
+          <h1 class="ui header">
             {{ $film->name }}
           </h1>
+          @foreach ($film->tags() as $key => $tags)
+            {{ $tags->name }}
+          @endforeach
+        </div>
+        <div class="third wide column">
+          {{ $film->views }}
         </div>
       </div>
       <div class="row">
@@ -109,6 +115,7 @@
     <script type="text/javascript">
       // Autoload
       var vjsPlayer;
+      var isAjaxDoing = false;
 
       // Ajax
       var thisEpisode = {
@@ -154,6 +161,11 @@
         },
         methods: {
           playEpisode: function(event, i) {
+            if ((thisEpisode.id === episodes[i].id) && (isAjaxDoing === true))
+            {
+              return;
+            }
+            episodes[i].views++;
             thisEpisode.id = episodes[i].id;
             var target = $(event.target).closest('a');
 
@@ -164,8 +176,11 @@
             $(playerVideo.$el).closest('.video-js').addClass('vjs-waiting');
 
             // Start getlink
-            $.get("{{ route('api.watch.getlink', ['url' => '']) }}/"+episodes[i].source, function(data) {
-              if (data.s === false) {
+            isAjaxDoing = true;
+            $.get("{{ route('api.watch.episode', ['film_id' => $film->id, 'episode_id' => '']) }}/"+thisEpisode.id, function(data) {
+              isAjaxDoing = false;
+              if (data.s === false)
+              {
                 return;
               }
               // Update player

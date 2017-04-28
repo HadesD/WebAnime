@@ -26,10 +26,10 @@ Route::group(['prefix' => 'watch', 'as' => 'watch.'], function() {
     ->name('index');
 
   Route::get('/{film_id}/{film_slug?}', 'WatchController@watchFilm')
-    ->where(['film_id' => '\s*[0-9]+',])
+    ->where(['film_id' => '\s*[0-9]+'])
     ->name('film');
 
   Route::get('/{film_id}/{episode_id}/{film_slug?}/{episode_slug?}', 'WatchController@watchEpisode')
-    ->where(['film_id' => '\s*[0-9]+', 'episode_id' => '\s*[0-9]+',])
+    ->where(['film_id' => '\s*[0-9]+', 'episode_id' => '\s*[0-9]+'])
     ->name('episode');
 });

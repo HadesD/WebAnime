@@ -15,8 +15,6 @@ class WatchController extends Controller
 
     $getLinkController = $namespace.'\GetLinkController';
 
-    $url = base64_decode($url);
-
     if (filter_var($url, FILTER_VALIDATE_URL))
     {
       $class = $namespace.'\GetLink\\'.studly_case_domain(parse_url($url)['host']);
@@ -33,11 +31,21 @@ class WatchController extends Controller
     return $getLinkController->getResults();
   }
 
+  public function watchEpisode($film_id, $episode_id)
+  {
+    $episode = Episode::find($episode_id);
+    $episode->views += 1;
+    $rtn = $this->getLink($episode->source);
+    $episode->save();
+
+    return $rtn;
+  }
+
   public function watchFilm($film_id)
   {
     $film = Film::find($film_id);
 
-    return $film->episodes()->get()->sortBy(function($episode){
+    return $film->episodes()->get()->sortBy(function($episode) {
       return $episode->ordinal;
     });
   }

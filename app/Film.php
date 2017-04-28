@@ -6,11 +6,13 @@ use Illuminate\Database\Eloquent\Model;
 
 class Film extends Model
 {
+  protected $hidden = ['source', 'updated_at', 'created_at'];
+
   protected $fillable = [
     'name', 'description', 'thumbnail', 'source', 'tags',
   ];
 
-  public $appends = ['slug', 'tags_name'];
+  public $appends = ['slug', 'views'];
 
   /**
    * Get all Episodes of film by column film_id in episodes table
@@ -37,8 +39,14 @@ class Film extends Model
     return str_slug($this->attributes['name'], '-');
   }
 
-  public function getTagsNameAttribute($value)
+  public function tags()
   {
-    return json_decode($this->attributes['tags'], true);
+    $tags = json_decode($this->attributes['tags'], true);
+    return Tag::findMany($tags);
+  }
+
+  public function getViewsAttribute($value)
+  {
+    return $this->episodes()->sum('views');
   }
 }

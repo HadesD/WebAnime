@@ -12,15 +12,15 @@ class WatchController extends Controller
   public function index()
   {
     $date = intval(date('Ymd'));
-    
+
     $count = Film::count();
-    
+
     $count = $count ? $count : 1;
-    
+
     $choose = $date % $count;
-    
+
     $film = Film::find($choose);
-    
+
     if (count($film) === 0)
     {
       $film = Film::first();
@@ -40,7 +40,7 @@ class WatchController extends Controller
     }
 
     $episode = $film->episodes()->first();
-    
+
     if (count($episode) === 0)
     {
       return $film;

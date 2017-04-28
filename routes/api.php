@@ -18,7 +18,12 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 Route::group(['prefix' => 'watch', 'as' => 'api.watch.'], function() {
-  Route::get('/get-link/{url}', 'API\WatchController@getLink')->name('getlink');
-  
-  Route::get('/{film_id}', 'API\WatchController@watchFilm')->name('film');
+  //Route::get('/get-link/{url}', 'API\WatchController@getLink')->name('getlink');
+
+  Route::get('/{film_id}', 'API\WatchController@watchFilm')
+    ->where(['film_id' => '[0-9]+'])
+    ->name('film');
+  Route::get('/{film_id}/{episode_id}', 'API\WatchController@watchEpisode')
+    ->where(['film_id' => '[0-9]+', 'episode_id' => '[0-9]+'])
+    ->name('episode');
 });
