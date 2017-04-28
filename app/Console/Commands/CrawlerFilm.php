@@ -111,7 +111,6 @@ class CrawlerFilm extends Command
         $bar->start();
         $bar->advance($offset);
         $limit = 40;
-        continue;
       }
 
       // Update new Request offset
@@ -188,17 +187,21 @@ class CrawlerFilm extends Command
 
     $uploadThumbs = new UploadIMGController;
 
-    $page = 20;
+    $page = 35;
 
     while (true)
     {
-      $url = "/tim-nang-cao/?status=&season=&year=&sort=&page={$page}";
+      $currentPage = $page;
+      $url = "/tim-nang-cao/?status=&season=&year=&sort=&page={$currentPage}";
       $res = @$client->request('GET', $url, []);
       if ($res->getStatusCode() !== 200)
       {
         continue;
       }
-
+      
+      // Update Process
+      $page++;
+      
       $crawler = new Crawler((string)$res->getBody());
 
       $filmListBox = $crawler->filter('.col-lg-8 > .movie-list-index');
@@ -221,9 +224,9 @@ class CrawlerFilm extends Command
         }
         $bar = $this->output->createProgressBar($parse_str['page']);
         $bar->start();
-        $bar->advance($page);
-        continue;
+        $bar->advance($currentPage-1);
       }
+      $bar->advance();
 
       $filmList = $filmListBox->filter('#movie-last-movie > li > a');
       if (count($filmList) <= 0)
@@ -231,7 +234,7 @@ class CrawlerFilm extends Command
         continue;
       }
       $bar2 = $this->output->createProgressBar(count($filmList));
-      $this->info("\nPage {$page} is processing");
+      $this->info("\nPage {$currentPage} is processing");
       $bar2->start();
       $filmList->reduce(function (Crawler $node, $i) use ($client, $base_uri, $uploadThumbs, $bar2)
       {
@@ -254,11 +257,13 @@ class CrawlerFilm extends Command
         $bar2->advance();
         if (count($filmContent) === 0)
         {
+          $this->error("\nSource {$source} is not has a info.");
           return;
         }
         
         if (count($filmContent->filter('.movie-detail > h1 > .title-1')) === 0)
         {
+          $this->error("\nSource {$source} is not has a title.");
           return;
         }
 
@@ -280,15 +285,11 @@ class CrawlerFilm extends Command
         }
         $film->save();
       });
-      $this->info("\nPage {$page} is completed: {$bar2->getProgress()}/{$bar2->getMaxSteps()}\n");
+      $this->info("\nPage {$currentPage} is completed: {$bar2->getProgress()}/{$bar2->getMaxSteps()}\n");
       $bar2->finish();
 
-      // Update Process
-      $bar->advance();
-      $page++;
-
       // Check end of job
-      if ($page >= $bar->getMaxSteps())
+      if ($currentPage >= $bar->getMaxSteps())
       {
         break;
       }
