@@ -27,3 +27,7 @@ Route::group(['prefix' => 'watch', 'as' => 'api.watch.'], function() {
     ->where(['film_id' => '[0-9]+', 'episode_id' => '[0-9]+'])
     ->name('episode');
 });
+
+Route::group(['prefix' => 'search', 'as' => 'api.search.'], function() {
+  Route::get('/film/{query}', 'API\SearchController@film')->name('film');
+});

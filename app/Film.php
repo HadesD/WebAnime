@@ -34,7 +34,7 @@ class Film extends Model
     $this->attributes['tags'] = json_encode($value);
   }
 
-  public function getSlugAttribute($value)
+  public function getSlugAttribute($value='')
   {
     return str_slug($this->attributes['name'], '-');
   }
@@ -45,7 +45,7 @@ class Film extends Model
     return Tag::findMany($tags);
   }
 
-  public function getViewsAttribute($value)
+  public function getViewsAttribute($value=0)
   {
     return $this->episodes()->sum('views');
   }

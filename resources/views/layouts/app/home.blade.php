@@ -8,9 +8,12 @@
       <i class="heartbeat icon"></i>
     </a>
     <div class="mobile hidden item">
-      <div class="ui transparent inverted icon large input">
-        <input placeholder="Search" type="text" />
-        <i class="search icon"></i>
+      <div id="find-film" class="ui search">
+        <div class="ui transparent inverted icon large input">
+          <input class="prompt" type="text" placeholder="Anime name...">
+          <i class="search icon"></i>
+        </div>
+        <div class="ui left aligned container results"></div>
       </div>
     </div>
     <div class="right menu">
@@ -32,3 +35,34 @@
 
   </div>
 @endsection
+@push('js')
+  <script type="text/javascript">
+    $('#find-film').search({
+      apiSettings: {
+        url: '{{ route('api.search.film', ['query'=>'']) }}/{query}',
+        onResponse: function(data) {
+          var
+            response = {
+              results : []
+            }
+          ;
+          // translate GitHub API response to work with search
+          $.each(data, function(index, item) {
+            var maxResults = 8;
+            if(index >= maxResults) {
+              return false;
+            }
+            // add result to category
+            response.results.push({
+              title       : item.name,
+              description : '@lang('watch.views') '+item.views,
+              url         : '{{ route('watch.index') }}/'+item.id+'/'+item.slug,
+            });
+          });
+          return response;
+        },
+      },
+      minCharacters : 2
+    });
+  </script>
+@endpush
