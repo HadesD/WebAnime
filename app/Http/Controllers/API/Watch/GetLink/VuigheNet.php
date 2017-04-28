@@ -4,7 +4,7 @@ namespace App\Http\Controllers\API\Watch\GetLink;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\API\Watch\GetLinkController;
-//use Symfony\Component\DomCrawler\Crawler;
+use Symfony\Component\DomCrawler\Crawler;
 use GuzzleHttp\Client;
 
 class VuigheNet extends GetLinkController
@@ -25,25 +25,29 @@ class VuigheNet extends GetLinkController
     ]);
 
     $res = $client->request('GET', $parseUrl["path"], []);
-
     if ($res->getStatusCode() !== 200)
     {
       return false;
     }
+    $dom = new Crawler((string)$res->getBody());
+    $filmPage = $dom->filter('#filmPage');
+    if (count($filmPage) === 0) {
+      return false;
+    }
 
-    preg_match('/id="filmPage".*?data-id="(\d+)"/msi', $res->getBody(), $film_id);
-    if (isset($film_id[1]) !== true)
+    $film_id = $filmPage->attr('data-id');
+    if (count($film_id) === 0)
     {
       return false;
     }
 
-    preg_match('/id="filmPage".*?data-episode-id="(\d+)"/msi', $res->getBody(), $episode_id);
-    if (isset($episode_id[1]) !== true)
+    $episode_id = $filmPage->attr('data-episode-id');
+    if (isset($episode_id) === 0)
     {
       return false;
     }
 
-    $getSrcs = $client->request('GET', '/api/v2/films/'.$film_id[1].'/episodes/'.$episode_id[1], []);
+    $getSrcs = $client->request('GET', '/api/v2/films/'.$film_id.'/episodes/'.$episode_id, []);
     if ($getSrcs->getStatusCode() !== 200)
     {
       return false;
