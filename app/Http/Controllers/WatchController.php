@@ -34,24 +34,16 @@ class WatchController extends Controller
   public function watchFilm($film_id)
   {
     $film = Film::find($film_id);
-    if (count($film) <= 0)
+    if (count($film) === 0)
     {
-      return 2;
+      return 404;
     }
-    
-    $date = intval(date('Ymd'));
 
-    $count = $film->episodes()->count();
-    
-    $count = $count ? $count : 1;
-    
-    $choose = $date % $count;
-    
-    $episode = Episode::find($choose);
+    $episode = $film->episodes()->first();
     
     if (count($episode) === 0)
     {
-      $episode = Episode::first();
+      return $film;
     }
 
     return redirect()->route('watch.episode', [
@@ -65,15 +57,15 @@ class WatchController extends Controller
   public function watchEpisode($film_id, $episode_id)
   {
     $film = Film::find($film_id);
-    if (count($film) <= 0)
+    if (count($film) === 0)
     {
-      return 3;
+      return 404;
     }
 
     $episode = $film->episodes()->find($episode_id);
-    if (count($episode) <= 0)
+    if (count($episode) === 0)
     {
-      return 4;
+      return 404;
     }
 
     return view('watch', [

@@ -105,15 +105,12 @@ class CrawlerFilm extends Command
         continue;
       }
 
-      if ($offset === 0)
+      if (isset($bar) === false)
       {
         $bar = $this->output->createProgressBar($data['total']);
         $bar->start();
+        $bar->advance($offset);
         $limit = 40;
-      }
-
-      if (isset($bar) !== true)
-      {
         continue;
       }
 
@@ -191,7 +188,7 @@ class CrawlerFilm extends Command
 
     $uploadThumbs = new UploadIMGController;
 
-    $page = 1;
+    $page = 20;
 
     while (true)
     {
@@ -210,7 +207,7 @@ class CrawlerFilm extends Command
         continue;
       }
 
-      if ($page === 1)
+      if (isset($bar) === false)
       {
         $getQuery = explode('?', $filmListBox->filter('.pagination a')->last()->attr('href'));
         if (isset($getQuery[1]) === false)
@@ -224,10 +221,7 @@ class CrawlerFilm extends Command
         }
         $bar = $this->output->createProgressBar($parse_str['page']);
         $bar->start();
-      }
-
-      if (isset($bar) === false)
-      {
+        $bar->advance($page);
         continue;
       }
 
@@ -257,12 +251,16 @@ class CrawlerFilm extends Command
         $filmCrawler = new Crawler((string)$filmData->getBody());
 
         $filmContent = $filmCrawler->filter('.movie-info')->last();
-        if (count($filmContent) <= 0)
+        $bar2->advance();
+        if (count($filmContent) === 0)
         {
           return;
         }
-
-        $bar2->advance();
+        
+        if (count($filmContent->filter('.movie-detail > h1 > .title-1')) === 0)
+        {
+          return;
+        }
 
         $film = Film::firstOrNew(
           [
@@ -270,9 +268,12 @@ class CrawlerFilm extends Command
           ],
           [
             'name' => $filmContent->filter('.movie-detail > h1 > .title-1')->text(),
-            'description' => $filmContent->filter('#film-content > p')->first()->text(),
           ]
         );
+        if (count($filmContent->filter('#film-content > p')) > 0)
+        {
+          $film->description = $filmContent->filter('#film-content > p')->first()->text();
+        }
         if (empty($film->thumbnail) === true)
         {
           $film->thumbnail = @$uploadThumbs->uploadURL($filmContent->filter('.movie-image > .movie-l-img > img')->first()->attr('src'));
