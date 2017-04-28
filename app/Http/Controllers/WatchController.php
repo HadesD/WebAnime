@@ -11,11 +11,19 @@ class WatchController extends Controller
 {
   public function index()
   {
-    $film = Film::first();
-
-    if (count($film) <= 0)
+    $date = intval(date('Ymd'));
+    
+    $count = Film::count();
+    
+    $count = $count ? $count : 1;
+    
+    $choose = $date % $count;
+    
+    $film = Film::find($choose);
+    
+    if (count($film) === 0)
     {
-      return 1;
+      $film = Film::first();
     }
 
     return redirect()->route('watch.film', [
@@ -30,17 +38,26 @@ class WatchController extends Controller
     {
       return 2;
     }
+    
+    $date = intval(date('Ymd'));
 
-    $episode = $film->episodes()->first();
-    if (count($episode) <= 0)
+    $count = $film->episodes()->count();
+    
+    $count = $count ? $count : 1;
+    
+    $choose = $date % $count;
+    
+    $episode = Episode::find($choose);
+    
+    if (count($episode) === 0)
     {
-      return 2.5;
+      $episode = Episode::first();
     }
 
     return redirect()->route('watch.episode', [
-      'film_id'      => $film_id,
+      'film_id'      => $episode->film_id,
       'episode_id'   => $episode->id,
-      'film_slug'    => $film->slug,
+      'film_slug'    => $episode->film->slug,
       'episode_slug' => $episode->slug,
     ]);
   }

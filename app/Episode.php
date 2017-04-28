@@ -35,4 +35,9 @@ class Episode extends Model
 
     return intval($order[1]);
   }
+  
+  public function film()
+  {
+    return $this->belongsTo('App\Film');
+  }
 }
