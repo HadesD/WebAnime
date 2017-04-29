@@ -16,7 +16,12 @@ class Episode extends Model
 
   public $appends = [
     'slug', 'ordinal',
-];
+  ];
+
+  public function film()
+  {
+    return $this->belongsTo('App\Film');
+  }
 
   public function getSlugAttribute($value)
   {
@@ -35,10 +40,5 @@ class Episode extends Model
     }
 
     return intval($order[1]);
-  }
-
-  public function film()
-  {
-    return $this->belongsTo('App\Film');
   }
 }
