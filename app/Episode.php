@@ -6,13 +6,17 @@ use Illuminate\Database\Eloquent\Model;
 
 class Episode extends Model
 {
-  protected $hidden = ['source', 'updated_at', 'created_at'];
+  protected $hidden = [
+    'source', 'updated_at', 'created_at',
+  ];
 
   protected $fillable = [
     'film_id', 'name', 'source',
   ];
 
-  public $appends = ['slug', 'ordinal'];
+  public $appends = [
+    'slug', 'ordinal',
+];
 
   public function getSlugAttribute($value)
   {

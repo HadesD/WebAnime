@@ -33,3 +33,7 @@ Route::group(['prefix' => 'watch', 'as' => 'watch.'], function() {
     ->where(['film_id' => '\s*[0-9]+', 'episode_id' => '\s*[0-9]+'])
     ->name('episode');
 });
+
+Route::get('/tags/{tag_id}/{tag_slug?}', function (\App\Tag $tag_id, $tag_slug=null) {
+  return $tag_id;
+})->where(['tag_id' => '[0-9]+'])->name('tags');

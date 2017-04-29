@@ -6,13 +6,17 @@ use Illuminate\Database\Eloquent\Model;
 
 class Film extends Model
 {
-  protected $hidden = ['source', 'updated_at', 'created_at'];
+  protected $hidden = [
+    'source', 'updated_at', 'created_at',
+  ];
 
   protected $fillable = [
     'name', 'description', 'thumbnail', 'source', 'tags',
   ];
 
-  public $appends = ['slug', 'views'];
+  public $appends = [
+    'slug', 'views',
+  ];
 
   /**
    * Get all Episodes of film by column film_id in episodes table

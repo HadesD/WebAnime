@@ -92,8 +92,10 @@
           <h1 class="ui header">
             {{ $film->name }}
           </h1>
-          @foreach ($film->tags() as $key => $tags)
-            {{ $tags->name }}
+          @foreach ($film->tags() as $key => $tag)
+            <a class="ui tag label" href="{{ route('tags', ['tag_id' => $tag->id, 'tag_slug' => $tag->slug]) }}">
+              {{ $tag->name }}
+            </a>
           @endforeach
         </div>
         <div class="five wide column">

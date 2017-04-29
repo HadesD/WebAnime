@@ -11,4 +11,13 @@ class Tag extends Model
   protected $fillable = [
       'name',
   ];
+
+  public $appends = [
+    'slug',
+  ];
+
+  public function getSlugAttribute($value)
+  {
+    return str_slug($this->attributes['name'], '-');
+  }
 }
