@@ -103,7 +103,7 @@
             <div class="ui small statistic">
               <div class="value">
                 <i class="lightning icon"></i>
-                {{ number_format($film->views) }}
+                {{ $film->views }}
               </div>
               <div class="label">
                 @lang('watch.views')

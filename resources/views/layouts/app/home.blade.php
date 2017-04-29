@@ -57,6 +57,7 @@
               title       : item.name,
               description : '@lang('watch.views') '+item.views,
               url         : '{{ route('watch.index') }}/'+item.id+'/'+item.slug,
+              image       : item.thumbnail,
             });
           });
           return response;

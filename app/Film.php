@@ -51,6 +51,16 @@ class Film extends Model
 
   public function getViewsAttribute($value=0)
   {
-    return $this->episodes()->sum('views');
+    return number_format($this->episodes()->sum('views'));
+  }
+
+  public function getThumbnailAttribute($value)
+  {
+    if (empty($value) === true)
+    {
+      $value = '//i.imgur.com/IoQdToB.png';
+    }
+
+    return $value;
   }
 }
