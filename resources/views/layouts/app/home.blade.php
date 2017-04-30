@@ -1,8 +1,11 @@
 @extends('layouts.app')
 @section('wrapper')
-  <div class="ui borderless icon big menu fluid" style="border-radius:0;">
+  <div class="ui borderless icon big menu fluid" style="border-radius:0;border:0;">
     <a class="item icon">
       <i class="content icon"></i>
+    </a>
+    <a class="item icon" href="{{ route('home') }}">
+      <i class="home icon"></i>
     </a>
     <a class="item icon" href="{{ route('watch.index') }}">
       <i class="heartbeat red icon"></i>
@@ -31,8 +34,33 @@
   <div class="ui container">
     @yield('content')
   </div>
-  <div class="ui footer">
-
+  <div class="ui inverted vertical footer segment" style="margin-top: 40px;">
+    <div class="ui container">
+      <div class="ui stackable inverted divided equal height stackable grid">
+        <div class="three wide column">
+          <h4 class="ui inverted header">About</h4>
+          <div class="ui inverted link list">
+            <a href="#" class="item">Sitemap</a>
+            <a href="#" class="item">Contact Us</a>
+            <a href="#" class="item">Religious Ceremonies</a>
+            <a href="#" class="item">Gazebo Plans</a>
+          </div>
+        </div>
+        <div class="three wide column">
+          <h4 class="ui inverted header">Services</h4>
+          <div class="ui inverted link list">
+            <a href="#" class="item">Banana Pre-Order</a>
+            <a href="#" class="item">DNA FAQ</a>
+            <a href="#" class="item">How To Access</a>
+            <a href="#" class="item">Favorite X-Men</a>
+          </div>
+        </div>
+        <div class="seven wide column">
+          <h4 class="ui inverted header">Footer Header</h4>
+          <p>Extra space for a call to action inside the footer that could help re-engage users.</p>
+        </div>
+      </div>
+    </div>
   </div>
 @endsection
 @push('js')
