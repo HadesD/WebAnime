@@ -1,16 +1,16 @@
 @extends('layouts.app')
 @section('wrapper')
-  <div class="ui borderless icon big menu inverted fluid" style="border-radius:0;">
+  <div class="ui borderless icon big menu fluid" style="border-radius:0;">
     <a class="item icon">
       <i class="content icon"></i>
     </a>
     <a class="item icon" href="{{ route('watch.index') }}">
-      <i class="heartbeat icon"></i>
+      <i class="heartbeat red icon"></i>
     </a>
     <div class="mobile hidden item">
       <div id="find-film" class="ui search">
-        <div class="ui transparent inverted icon large input">
-          <input class="prompt" type="text" placeholder="Anime name...">
+        <div class="ui transparent icon input">
+          <input class="prompt" type="text" placeholder="@lang('navbar.search.type')" />
           <i class="search icon"></i>
         </div>
         <div class="ui left aligned container results"></div>
@@ -66,4 +66,12 @@
       minCharacters : 2
     });
   </script>
+  <div id="fb-root"></div>
+  <script>(function(d, s, id) {
+    var js, fjs = d.getElementsByTagName(s)[0];
+    if (d.getElementById(id)) return;
+    js = d.createElement(s); js.id = id;
+    js.src = "//connect.facebook.net/vi_VN/sdk.js#xfbml=1&version=v2.9&appId=273501966143679";
+    fjs.parentNode.insertBefore(js, fjs);
+  }(document, 'script', 'facebook-jssdk'));</script>
 @endpush
