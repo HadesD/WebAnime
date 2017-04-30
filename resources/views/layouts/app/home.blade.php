@@ -31,10 +31,10 @@
       </a>
     </div>
   </div>
-  <div class="ui container">
+  <div class="ui container" style="min-height:100%;margin-bottom:40px;">
     @yield('content')
   </div>
-  <div class="ui inverted vertical footer segment" style="margin-top: 40px;">
+  <div class="ui inverted vertical footer segment">
     <div class="ui container">
       <div class="ui stackable inverted divided equal height stackable grid">
         <div class="three wide column">
