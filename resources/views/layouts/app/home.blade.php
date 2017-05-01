@@ -1,33 +1,33 @@
 @extends('layouts.app')
 @section('wrapper')
-  <div class="ui borderless icon big menu fluid" style="border-radius:0;border:0;">
+  <div class="ui borderless icon menu fluid" style="border-radius:0;border:0;border-top:2px solid #0089ff;">
     <a class="item icon">
-      <i class="content icon"></i>
+      <i class="content large icon"></i>
     </a>
     <a class="item icon" href="{{ route('home') }}">
-      <i class="home icon"></i>
+      <i class="home large icon"></i>
     </a>
     <a class="item icon" href="{{ route('watch.index') }}">
-      <i class="heartbeat red icon"></i>
+      <i class="heartbeat red large icon"></i>
     </a>
     <div class="mobile hidden item">
       <div id="find-film" class="ui search">
         <div class="ui transparent icon input">
           <input class="prompt" type="text" placeholder="@lang('navbar.search.type')" />
-          <i class="search icon"></i>
+          <i class="search large icon"></i>
         </div>
         <div class="ui left aligned container results"></div>
       </div>
     </div>
     <div class="right menu">
       <a class="mobile only item icon">
-        <i class="search icon"></i>
+        <i class="search large icon"></i>
       </a>
       <a class="item icon">
-        <i class="alarm icon"></i>
+        <i class="alarm large icon"></i>
       </a>
       <a class="item icon">
-        <i class="user icon"></i>
+        <i class="user large icon"></i>
       </a>
     </div>
   </div>
