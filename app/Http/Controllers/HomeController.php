@@ -25,9 +25,7 @@ class HomeController extends Controller
   */
   public function index()
   {
-    $newestList = Episode::selectRaw('DISTINCT(film_id)')
-      //->groupBy('film_id')
-      //->orderBy('updated_at', 'DESC')
+    $newestList = Episode::orderBy('updated_at', 'DESC')
       ->limit(8)
       ->get();
 
