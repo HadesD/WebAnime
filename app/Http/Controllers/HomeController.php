@@ -25,11 +25,13 @@ class HomeController extends Controller
   */
   public function index()
   {
+    $carousel = Film::whereNotNull('thumbnail')->inRandomOrder()->limit(8)->get();
     $newestList = Episode::orderBy('updated_at', 'DESC')
       ->limit(8)
       ->get();
 
     return view('home', [
+      'carousel' => $carousel,
       'newestList' => $newestList,
     ]);
   }
