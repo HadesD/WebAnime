@@ -23,7 +23,7 @@
   <div id="owl-demo" class="owl-carousel owl-theme">
     @foreach ($carousel as $film)
       <div class="item">
-        <a href="{{ route('watch.film', ['film_id' => $film->id, 'film_slug' => $film->slug]) }}">
+        <a href="{{ $film->getRoute() }}">
           <img src="{{ $film->thumbnail }}" />
         </a>
       </div>
@@ -32,9 +32,35 @@
   <h3 class="ui dividing red header">
     Dividing Header
   </h3>
-  <div class="ui four cards">
+  <div class="ui three special stackable cards">
     @foreach ($newestList as $newest)
       <div class="ui red card">
+        <div class="blurring dimmable image">
+          <div class="ui dimmer">
+            <div class="content">
+              <div class="center">
+                <h4 class="ui inverted header">
+                  @lang('watch.lastest'): {{ $newest->name }}
+                </h4>
+                <a class="ui inverted button" href="{{ $newest->getRoute() }}">
+                  @lang('watch.watchnow')
+                </a>
+              </div>
+            </div>
+          </div>
+          <img class="image" src="{{ $newest->film->thumbnail }}" />
+        </div>
+        <div class="content">
+          <a class="header" href="{{ $newest->getRoute() }}">
+            {{ $newest->film->name }}
+          </a>
+        </div>
+        <div class="extra content">
+          <i class="lightning icon"></i>
+          @lang('watch.views'): {{ $newest->film->views }}
+        </div>
+      </div>
+      {{-- <div class="ui red card">
         <a class="image" style="max-height: 185px;overflow: hidden;" href="{{ route('watch.episode', ['film_id' => $newest->film_id, 'episode_id' => $newest->id]) }}">
           <img src="{{ $newest->film->thumbnail }}">
         </a>
@@ -46,13 +72,16 @@
             <a>{{ print_r($newest) }}</a>
           </div>
         </div>
-      </div>
+      </div> --}}
     @endforeach
   </div>
 @endsection
 @push('js')
   <script type="text/javascript" src="{{ asset('libs/OwlCarousel/owl-carousel/owl.carousel.js') }}"></script>
   <script type="text/javascript">
+    $('.special.cards .image').dimmer({
+      on: 'hover'
+    });
     $(document).ready(function() {
       $("#owl-demo").owlCarousel({
         autoPlay : 3000,

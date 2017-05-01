@@ -33,6 +33,14 @@ class Film extends Model
     return Tag::findMany($tags);
   }
 
+  public function getRoute()
+  {
+    return route('watch.film', [
+      'film_id' => $this->attributes['id'],
+      'film_slug' => $this->getSlugAttribute(),
+    ]);
+  }
+
   public function getTagsAttribute($value)
   {
     return json_decode($value, true);
@@ -44,12 +52,12 @@ class Film extends Model
     $this->attributes['tags'] = json_encode($value);
   }
 
-  public function getSlugAttribute($value='')
+  public function getSlugAttribute()
   {
     return str_slug($this->attributes['name'], '-');
   }
 
-  public function getViewsAttribute($value=0)
+  public function getViewsAttribute()
   {
     return number_format($this->episodes()->sum('views'));
   }

@@ -23,12 +23,22 @@ class Episode extends Model
     return $this->belongsTo('App\Film');
   }
 
-  public function getSlugAttribute($value)
+  public function getRoute()
+  {
+    return route('watch.episode', [
+      'film_id' => $this->film->id,
+      'film_slug' => $this->film->getSlugAttribute(),
+      'episode_id' => $this->attributes['id'],
+      'episode_slug' => $this->getSlugAttribute(),
+    ]);
+  }
+
+  public function getSlugAttribute()
   {
     return str_slug($this->attributes['name'], '-');
   }
 
-  public function getOrdinalAttribute($value)
+  public function getOrdinalAttribute()
   {
     $name = $this->attributes['name'];
 

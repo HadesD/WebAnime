@@ -117,7 +117,7 @@
           <div class="item">
             <i class="share alternate icon"></i>
             <div class="content">
-              <div class="fb-like" data-href="{{ route('watch.film', ['film_id' => $film->id, 'film_slug' => $film->slug]) }}" data-layout="button_count" data-action="like" data-show-faces="false" data-share="true"></div>
+              <div class="fb-like" data-href="{{ $film->getRoute() }}" data-layout="button_count" data-action="like" data-show-faces="false" data-share="true"></div>
             </div>
           </div>
           <div class="item">
@@ -142,7 +142,7 @@
           </a>
         </div>
         <div class="ui tab segment active" data-tab="first">
-          <div class="fb-comments" data-width="100%" data-href="{{ route('watch.film', ['film_id' => $film->id, 'film_slug' => $film->slug]) }}" data-numposts="5"></div>
+          <div class="fb-comments" data-width="100%" data-href="{{ $film->getRoute() }}" data-numposts="5"></div>
         </div>
       </div>
     </div>

@@ -27,7 +27,8 @@ class HomeController extends Controller
   {
     $carousel = Film::whereNotNull('thumbnail')->inRandomOrder()->limit(8)->get();
     $newestList = Episode::orderBy('updated_at', 'DESC')
-      ->limit(8)
+      ->limit(9)
+      //->makeVisible('name')
       ->get();
 
     return view('home', [
