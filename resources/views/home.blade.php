@@ -20,7 +20,8 @@
   </style>
 @endpush
 @section('content')
-  <div id="owl-demo" class="owl-carousel owl-theme">
+  <div class="ui segment">
+    <div id="owl-demo" class="owl-carousel owl-theme">
     @foreach ($carousel as $film)
       <div class="item">
         <a href="{{ $film->getRoute() }}">
@@ -28,6 +29,7 @@
         </a>
       </div>
     @endforeach
+  </div>
   </div>
   <h3 class="ui dividing red header">
     Dividing Header
@@ -62,7 +64,7 @@
       </div>
       {{-- <div class="ui red card">
         <a class="image" style="max-height: 185px;overflow: hidden;" href="{{ route('watch.episode', ['film_id' => $newest->film_id, 'episode_id' => $newest->id]) }}">
-          <img src="{{ $newest->film->thumbnail }}">
+          <img src="{{ $newest->film->thumbnail }}" />
         </a>
         <div class="content">
           <a class="header" href="{{ route('watch.episode', ['film_id' => $newest->film_id, 'episode_id' => $newest->id]) }}">
