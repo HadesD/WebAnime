@@ -61,7 +61,7 @@ class Film extends Model
   {
     return number_format($this->episodes()->sum('views'));
   }
-
+  /*
   public function getThumbnailAttribute($value)
   {
     if (empty($value) === true)
@@ -71,4 +71,5 @@ class Film extends Model
 
     return $value;
   }
+  */
 }

@@ -14,9 +14,15 @@ class UploadIMGController extends Controller
 
   public function __construct()
   {
-    $this->apps[] = [
-      'client_id'     => 'c3da86d360cfe3a',
-      'client_secret' => '9b094937d94d9e4ff3311b5b6fafe5a31fff902d',
+    $this->apps = [
+      [
+        'client_id'     => 'c3da86d360cfe3a',
+        'client_secret' => '9b094937d94d9e4ff3311b5b6fafe5a31fff902d',
+      ],
+      [
+        'client_id'     => 'c08a2166df6d86a',
+        'client_secret' => '6b13e357d8981889971725bbdc9753182d4d5256',
+      ],
     ];
   }
 
