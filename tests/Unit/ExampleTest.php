@@ -26,7 +26,7 @@ class ExampleTest extends TestCase
         ]*/
       ],
     ];
-    $parseUrl = parse_url('http://anime47.com/xem-phim-ongaku-shoujo-ep-Full/119622.html');
+    $parseUrl = parse_url('http://anime47.com/phim/pocket-monsters-sun-moon/m6003.html');
     $client = new Client([
       'base_uri' => 'http://'.$parseUrl['host'],
       'http_errors' => false,
@@ -44,49 +44,11 @@ class ExampleTest extends TestCase
     {
       return false;
     }
-
+    
+    // Start
     $dom = new Crawler((string)$res->getBody());
-    $jsonPlay = $dom->filter('#player-area script');
-    if (count($jsonPlay) === 0)
-    {
-      return fasle;
-    }
-    $rpl = [
-      'bitplayer(' => '',
-      ');'         => '',
-      'div:'       => '"div":',
-      'link:'      => '"link":',
-      'player:'    => '"player":',
-      'style:'     => '"style":',
-      'version:'   => '"version":',
-    ];
-    $json = trim(str_replace(array_keys($rpl), array_values($rpl), $jsonPlay->text()));
-    $json_decode = json_decode($json, true);
-    if (isset($json_decode['link']) === false)
-    {
-      return false;
-    }
-
-    $res = $client->request('GET', sprintf('/player/dien_thoai.php?url=%s', $json_decode['link']), []);
-    if ($res->getStatusCode() !== 200)
-    {
-      return false;
-    }
-
-    $dom = new Crawler((string)$res->getBody());
-    $linkList = $dom->filter('a');
-    if (count($linkList) === 0)
-    {
-      return false;
-    }
-    $link = &$this->results['srcs'];
-    $linkList->reduce(function (Crawler $node, $i) use (&$link) {
-      $link[] = [
-        'quality' => $node->text(),
-        'src' => $node->attr('href'),
-        'type' => 'video/mp4',
-      ];
-    });
+    $views = sprintf('%d', $dom->filter('.movie-dd')->last()->text());
+    print_r($views);
 
     return true;
   }

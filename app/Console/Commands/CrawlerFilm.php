@@ -249,10 +249,15 @@ class CrawlerFilm extends Command
         }
 
         $source = $base_uri.$m[1];
-
-        $filmData = @$client->request('GET', $source, []);
-        if ($filmData->getStatusCode() !== 200)
-        {
+        try {
+          $filmData = @$client->request('GET', $source, []);
+          if ($filmData->getStatusCode() !== 200)
+          {
+            $this->error("\nSource {$source} is not Return HTTP Code = 200.");
+            return;
+          }
+        } catch (\GuzzleHttp\Exception\RequestException $e) {
+          $this->error("\nSource {$source} is RequestException Error.");
           return;
         }
 

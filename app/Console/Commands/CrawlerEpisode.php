@@ -144,7 +144,7 @@ class CrawlerEpisode extends Command
       ],
     ]);
 
-    $res = $client->request('GET', $parse_url['path'], []);
+    $res = @$client->request('GET', $parse_url['path'], []);
     if ($res->getStatusCode() !== 200)
     {
       return;
@@ -156,14 +156,19 @@ class CrawlerEpisode extends Command
     {
       return;
     }
-
+    $_findViews = $dom->filter('.movie-dd');
+    $filmViews = 0;
+    if (count($_findViews) !== 0)
+    {
+      $filmViews = sprintf('%d', $_findViews->last()->text());
+    }
     preg_match('/^\.(.*)/i', $btns->last()->attr('href'), $m);
     if (isset($m[1]) === false)
     {
       return;
     }
 
-    $res = $client->request('GET', $m[1], []);
+    $res = @$client->request('GET', $m[1], []);
     if ($res->getStatusCode() !== 200)
     {
       return;
@@ -176,7 +181,7 @@ class CrawlerEpisode extends Command
       return;
     }
 
-    $servers->reduce(function (Crawler $node, $i) use ($film) {
+    $servers->reduce(function (Crawler $node, $i) use ($film, $servers, $filmViews) {
       $source = $node->attr('href');
       if ((empty($source) === true) || (filter_var($source, FILTER_VALIDATE_URL) === false))
       {
@@ -193,6 +198,11 @@ class CrawlerEpisode extends Command
           'film_id' => $film->id,
         ]
       );
+      $viewsPerEpisode = round($filmViews / count($servers)) + rand(0, 1000);
+      if ($episode->views < $viewsPerEpisode)
+      {
+        $episode->views = $viewsPerEpisode;
+      }
       $episode->save();
     });
   }

@@ -1,8 +1,7 @@
 @extends('layouts.app.home')
 @push('css')
-  <link rel="stylesheet" href="{{ asset('libs/OwlCarousel/owl-carousel/owl.carousel.css') }}" />
-  <link rel="stylesheet" href="{{ asset('libs/OwlCarousel/owl-carousel/owl.theme.css') }}" />
-  <link href="{{ asset('libs/OwlCarousel/owl-carousel/owl.transitions.css') }}" rel="stylesheet" />
+  <link rel="stylesheet" href="{{ asset('libs/OwlCarousel2/dist/assets/owl.carousel.min.css') }}" />
+  <link rel="stylesheet" href="{{ asset('libs/OwlCarousel2/dist/assets/owl.theme.default.min.css') }}" />
   <style media="screen">
   #owl-demo .owl-item div{
     padding:5px;
@@ -79,7 +78,7 @@
   </div>
 @endsection
 @push('js')
-  <script type="text/javascript" src="{{ asset('libs/OwlCarousel/owl-carousel/owl.carousel.js') }}"></script>
+  <script type="text/javascript" src="{{ asset('libs/OwlCarousel2/dist/owl.carousel.min.js') }}"></script>
   <script type="text/javascript">
     $('.special.cards .image').dimmer({
       on: 'hover'
