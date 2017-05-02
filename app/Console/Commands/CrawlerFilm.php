@@ -96,12 +96,14 @@ class CrawlerFilm extends Command
       $res = @$client->request('GET', $url, []);
       if ($res->getStatusCode() !== 200)
       {
+        $this->error("{$url}\r Error request.");
         continue;
       }
 
       $data = json_decode($res->getBody(), true);
       if (isset($data['data']) !== true)
       {
+        $this->error("{$url}\r Error json data.");
         continue;
       }
 
@@ -197,6 +199,7 @@ class CrawlerFilm extends Command
       $res = @$client->request('GET', $url, []);
       if ($res->getStatusCode() !== 200)
       {
+        $this->error("{$url}\r Error request.");
         continue;
       }
 
@@ -216,6 +219,7 @@ class CrawlerFilm extends Command
         $getQuery = explode('?', $filmListBox->filter('.pagination a')->last()->attr('href'));
         if (isset($getQuery[1]) === false)
         {
+          $this->error("{$url}\r Dom error.");
           continue;
         }
         parse_str($getQuery[1], $parse_str);
