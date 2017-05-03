@@ -3,18 +3,26 @@
   <link rel="stylesheet" href="{{ asset('libs/OwlCarousel2/dist/assets/owl.carousel.min.css') }}" />
   <link rel="stylesheet" href="{{ asset('libs/OwlCarousel2/dist/assets/owl.theme.default.min.css') }}" />
   <style media="screen">
+  #owl-demo{
+    overflow: hidden;
+  }
   #owl-demo .owl-item div{
-    padding:5px;
-    max-height: 500px;
+    height: 260px;
   }
   #owl-demo .owl-item img{
-    display: block;
-    width: 100%;
-    height: auto;
-    margin-top: -35%;
-    -webkit-border-radius: 3px;
-    -moz-border-radius: 3px;
-    border-radius: 3px;
+    min-height: 100%;
+  }
+  #owl-demo i.icon{
+    position: absolute;
+    top: 50%;
+    left:50%;
+    margin-top: -28px;
+    margin-left: -33px;
+    cursor: pointer;
+    opacity: 0;
+  }
+  #owl-demo .owl-item:hover i.icon{
+    opacity: 1;
   }
   </style>
 @endpush
@@ -22,18 +30,19 @@
   <div class="ui segment">
     <div id="owl-demo" class="owl-carousel owl-theme">
     @foreach ($carousel as $film)
-      <div class="item">
-        <a href="{{ $film->getRoute() }}">
-          <img src="{{ $film->thumbnail }}" />
-        </a>
-      </div>
+      <a href="{{ $film->getRoute() }}">
+        <div class="item">
+            <img src="{{ $film->thumbnail }}" />
+            <i class="video play huge icon"></i>
+        </div>
+      </a>
     @endforeach
   </div>
   </div>
   <h3 class="ui dividing red header">
     Dividing Header
   </h3>
-  <div class="ui three special stackable cards">
+  <div class="ui five special stackable cards">
     @foreach ($newestList as $newest)
       <div class="ui red card">
         <div class="blurring dimmable image">
@@ -87,13 +96,8 @@
       $("#owl-demo").owlCarousel({
         autoPlay : 3000,
         loop: true,
-        stopOnHover : true,
-        //navigation:true,
-        paginationSpeed : 1000,
-        goToFirstSpeed : 2000,
-        singleItem : true,
-        autoHeight : true,
-        transitionStyle:"fade"
+        margin:10,
+        autoWidth:true,
       });
     });
   </script>
