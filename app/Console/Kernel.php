@@ -27,6 +27,7 @@ class Kernel extends ConsoleKernel
     {
         // $schedule->command('inspire')
         //          ->hourly();
+        //          ->everyMinute();
 
       $schedule->command('crawler:film')->hourly();
       $schedule->command('crawler:episode')->hourly();
