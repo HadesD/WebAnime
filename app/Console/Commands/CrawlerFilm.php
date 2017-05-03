@@ -5,6 +5,7 @@ namespace App\Console\Commands;
 use Illuminate\Console\Command;
 use App\Film;
 use App\Tag;
+use App\FilmTag;
 use GuzzleHttp\Client;
 use Symfony\Component\DomCrawler\Crawler;
 use App\Http\Controllers\API\Imgur\UploadIMGController;
@@ -148,16 +149,7 @@ class CrawlerFilm extends Command
                 'name' => $genre_data['name'],
               ]
             );
-            if (isset($film->tags) === false)
-            {
-              $film->tags = [];
-            }
-            if (in_array($tag->id, $film->tags) === false)
-            {
-              $_film_tags = $film->tags;
-              $_film_tags[] = $tag->id;
-              $film->tags = $_film_tags;
-            }
+            $film->tags()->save($tag);
             $tag->save();
           }
         }
@@ -308,16 +300,7 @@ class CrawlerFilm extends Command
                 'name' => trim($cat->textContent),
               ]
             );
-            if (isset($film->tags) === false)
-            {
-              $film->tags = [];
-            }
-            if (in_array($tag->id, $film->tags) === false)
-            {
-              $_film_tags = $film->tags;
-              $_film_tags[] = $tag->id;
-              $film->tags = $_film_tags;
-            }
+            $film->tags()->save($tag);
             $tag->save();
           }
         }

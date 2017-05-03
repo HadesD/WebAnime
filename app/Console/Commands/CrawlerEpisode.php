@@ -4,7 +4,7 @@ namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
 use App\Film;
-use App\Episode;
+use App\FilmEpisode;
 use GuzzleHttp\Client;
 use Symfony\Component\DomCrawler\Crawler;
 // use App\Http\Controllers\API\Imgur\UploadIMGController;
@@ -16,7 +16,7 @@ class CrawlerEpisode extends Command
   *
   * @var string
   */
-  protected $signature = 'crawler:episode';
+  protected $signature = 'crawler:film-episode';
 
   /**
   * The console command description.
@@ -112,7 +112,7 @@ class CrawlerEpisode extends Command
     {
       $bar->advance();
       $source = $base_uri.$data['link'];
-      $episode = Episode::firstOrNew(
+      $episode = FilmEpisode::firstOrNew(
         [
           'source' => $source,
         ],
@@ -189,7 +189,7 @@ class CrawlerEpisode extends Command
       }
 
       // Insert/Update Episode to database
-      $episode = Episode::firstOrNew(
+      $episode = FilmEpisode::firstOrNew(
         [
           'source' => $source,
         ],

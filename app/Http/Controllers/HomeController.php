@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Film;
-use App\Episode;
+use App\FilmEpisode;
 
 class HomeController extends Controller
 {
@@ -26,9 +26,12 @@ class HomeController extends Controller
   public function index()
   {
     $carousel = Film::whereNotNull('thumbnail')->inRandomOrder()->limit(8)->get();
-    $newestList = Episode::orderBy('updated_at', 'DESC')
-      ->limit(9)
-      //->makeVisible('name')
+
+    $newestList = FilmEpisode::
+      //distinct('film_id')
+      //groupBy('film_id')
+      orderBy('created_at', 'DESC')
+      ->limit(10)
       ->get();
 
     return view('home', [

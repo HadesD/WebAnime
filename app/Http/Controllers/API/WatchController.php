@@ -5,7 +5,7 @@ namespace App\Http\Controllers\API;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Film;
-use App\Episode;
+use App\FilmEpisode;
 
 class WatchController extends Controller
 {
@@ -33,7 +33,7 @@ class WatchController extends Controller
 
   public function watchEpisode($film_id, $episode_id)
   {
-    $episode = Episode::find($episode_id);
+    $episode = FilmEpisode::find($episode_id);
     $episode->views += 1;
     $rtn = $this->getLink($episode->source);
     $episode->save();

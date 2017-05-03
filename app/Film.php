@@ -6,12 +6,14 @@ use Illuminate\Database\Eloquent\Model;
 
 class Film extends Model
 {
+  protected $table = 'films';
+
   protected $hidden = [
     'source', 'updated_at', 'created_at',
   ];
 
   protected $fillable = [
-    'name', 'description', 'thumbnail', 'source', 'tags',
+    'name', 'description', 'thumbnail', 'source',
   ];
 
   public $appends = [
@@ -24,13 +26,12 @@ class Film extends Model
    */
   public function episodes()
   {
-    return $this->hasMany('App\Episode');
+    return $this->hasMany('App\FilmEpisode');
   }
 
   public function tags()
   {
-    $tags = json_decode($this->attributes['tags'], true);
-    return Tag::findMany($tags);
+    return $this->belongsToMany('App\Tag');
   }
 
   public function getRoute()
@@ -39,17 +40,6 @@ class Film extends Model
       'film_id' => $this->attributes['id'],
       'film_slug' => $this->getSlugAttribute(),
     ]);
-  }
-
-  public function getTagsAttribute($value)
-  {
-    return json_decode($value, true);
-  }
-
-  public function setTagsAttribute($value)
-  {
-    $value = array_filter($value);
-    $this->attributes['tags'] = json_encode($value);
   }
 
   public function getSlugAttribute()

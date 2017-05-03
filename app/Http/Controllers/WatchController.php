@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Film;
-use App\Episode;
+use App\FilmEpisode;
 use App\Http\Controllers\Controller;
 
 class WatchController extends Controller

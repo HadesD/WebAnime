@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Tag extends Model
 {
+  protected $table = 'tags';
+
   public $timestamps = false;
 
   protected $fillable = [
@@ -15,6 +17,11 @@ class Tag extends Model
   public $appends = [
     'slug',
   ];
+
+  public function films()
+  {
+    return $this->belongsToMany('App\Film');
+  }
 
   public function getSlugAttribute($value)
   {

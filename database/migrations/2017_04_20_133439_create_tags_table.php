@@ -14,8 +14,8 @@ class CreateTagsTable extends Migration
      public function up()
      {
          Schema::create('tags', function (Blueprint $table) {
-             $table->increments('id');
-             $table->string('name');
+            $table->increments('id');
+            $table->string('name');
          });
      }
 
@@ -26,6 +26,6 @@ class CreateTagsTable extends Migration
       */
      public function down()
      {
-         Schema::dropIfExists('tags');
+        Schema::dropIfExists('tags');
      }
 }

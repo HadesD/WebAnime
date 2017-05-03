@@ -4,8 +4,10 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Episode extends Model
+class FilmEpisode extends Model
 {
+  protected $table = 'film_episodes';
+
   protected $hidden = [
     'source', 'updated_at', 'created_at',
   ];
