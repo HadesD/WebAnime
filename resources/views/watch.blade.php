@@ -50,7 +50,7 @@
   <div id="film-wrapper" class="ui equal width internally stackable grid">
     <div class="row">
       <div class="column">
-        <video id="player-video" class="video-js vjs-dark-hades" controls autoplay preload="auto" v-bind:poster="thisEpisode.thumbnail" data-setup="{'playbackRates': [1, 1.5, 2]}" v-bind:src="thisEpisode.src">
+        <video id="player-video" class="hidden video-js vjs-big-play-centered vjs-dark-hades" controls autoplay preload="auto" v-bind:poster="thisEpisode.thumbnail" data-setup="{'playbackRates': [1, 1.5, 2]}" v-bind:src="thisEpisode.src">
           <source v-bind:src="thisEpisode.src" type="video/mp4" />
         </video>
       </div>
@@ -103,7 +103,7 @@
           <div class="item">
             <i class="users icon"></i>
             <div class="content">
-              <button type="button" class="ui circular icon black tiny button" data-tooltip="@lang('watch.follow')">
+              <button type="button" class="ui circular icon blue tiny button" data-tooltip="@lang('watch.follow')">
                 <i class="alarm icon"></i>
               </button>
             </div>
@@ -118,7 +118,7 @@
             <i class="tags icon"></i>
             <div class="content">
               @foreach ($film->tags as $tag)
-                <a class="ui tag label" href="{{ route('tags', ['tag_id' => $tag->id, 'tag_slug' => $tag->slug]) }}">
+                <a class="ui tag teal label" href="{{ route('tags', ['tag_id' => $tag->id, 'tag_slug' => $tag->slug]) }}">
                   {{ $tag->name }}
                 </a>
               @endforeach
@@ -155,7 +155,7 @@
   // Ajax
   var thisEpisode = {
     id: {{ $episode->id }},
-    // src: 'http://download.blender.org/peach/bigbuckbunny_movies/BigBuckBunny_320x180.mp4',
+    //src: 'http://download.blender.org/peach/bigbuckbunny_movies/BigBuckBunny_320x180.mp4',
     thumbnail: '{{ $film->thumbnail }}',
     type: '',
   };

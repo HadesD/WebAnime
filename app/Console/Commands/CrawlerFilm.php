@@ -149,7 +149,7 @@ class CrawlerFilm extends Command
                 'name' => $genre_data['name'],
               ]
             );
-            $film->tags()->save($tag);
+            $film->tags()->syncWithoutDetaching([$tag->id]);
             $tag->save();
           }
         }
@@ -187,6 +187,8 @@ class CrawlerFilm extends Command
     while (true)
     {
       $currentPage = $page;
+      // Update Process
+      $page++;
       $url = "/tim-nang-cao/?status=&season=&year=&sort=&page={$currentPage}";
       $res = @$client->request('GET', $url, []);
       if ($res->getStatusCode() !== 200)
@@ -194,9 +196,6 @@ class CrawlerFilm extends Command
         $this->error("{$url}\r Error request.");
         continue;
       }
-
-      // Update Process
-      $page++;
 
       $crawler = new Crawler((string)$res->getBody());
 
@@ -300,7 +299,7 @@ class CrawlerFilm extends Command
                 'name' => trim($cat->textContent),
               ]
             );
-            $film->tags()->save($tag);
+            $film->tags()->syncWithoutDetaching([$tag->id]);
             $tag->save();
           }
         }
