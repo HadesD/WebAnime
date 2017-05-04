@@ -50,7 +50,9 @@
   <div id="film-wrapper" class="ui equal width internally stackable grid">
     <div class="row">
       <div class="column">
-        <video id="player-video" class="video-js vjs-dark-hades" controls autoplay preload="auto" v-bind:poster="thisEpisode.thumbnail" data-setup="{'playbackRates': [1, 1.5, 2]}" v-bind:src="thisEpisode.src"></video>
+        <video id="player-video" class="video-js vjs-dark-hades" controls autoplay preload="auto" v-bind:poster="thisEpisode.thumbnail" data-setup="{'playbackRates': [1, 1.5, 2]}" v-bind:src="thisEpisode.src">
+          <source v-bind:src="thisEpisode.src" type="video/mp4" />
+        </video>
       </div>
       <div class="four wide column">
         <div id="episode-list" class="ui vertical small menu">
@@ -101,14 +103,6 @@
           <div class="item">
             <i class="users icon"></i>
             <div class="content">
-              <div class="ui tiny labeled button" tabindex="0">
-                <div class="ui tiny red icon button">
-                  <i class="heart icon"></i>
-                </div>
-                <a class="ui basic red left pointing label">
-                  1,048
-                </a>
-              </div>
               <button type="button" class="ui circular icon black tiny button" data-tooltip="@lang('watch.follow')">
                 <i class="alarm icon"></i>
               </button>
@@ -123,7 +117,7 @@
           <div class="item">
             <i class="tags icon"></i>
             <div class="content">
-              @foreach ($film->tags() as $key => $tag)
+              @foreach ($film->tags as $tag)
                 <a class="ui tag label" href="{{ route('tags', ['tag_id' => $tag->id, 'tag_slug' => $tag->slug]) }}">
                   {{ $tag->name }}
                 </a>

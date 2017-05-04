@@ -121,12 +121,10 @@
         mouseenter: function () {
           $(this).find(".item").dimmer('show');
           $(this).find("i.icon").fadeIn("fast");
-          console.log(1);
         },
         mouseleave: function () {
           $(this).find(".item").dimmer('hide');
           $(this).find("i.icon").fadeOut("fast");
-          console.log(2);
         }
       }, "#owl-demo .owl-item");
     });
