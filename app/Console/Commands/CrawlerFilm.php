@@ -276,6 +276,10 @@ class CrawlerFilm extends Command
             'name' => $filmContent->filter('.movie-detail > h1 > .title-1')->text(),
           ]
         );
+        if (isset($film->id) === false)
+        {
+          return;
+        }
         if (count($filmContent->filter('#film-content > p')) > 0)
         {
           $film->description = $filmContent->filter('#film-content > p')->first()->text();

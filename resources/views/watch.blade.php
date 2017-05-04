@@ -14,6 +14,9 @@
     position:relative;
     overflow: hidden;
   }
+  #player-video * {
+    outline: 0;
+  }
   #player-video,
   #episode-list {
     width: 100%;
@@ -57,7 +60,7 @@
       <div class="four wide column">
         <div id="episode-list" class="ui vertical small menu">
           <template v-for="episode, index in episodes">
-            <a class="item" :href="'{{ route('watch.episode', ['film_id' => $film->id, 'episode_id' => '']) }}/'+episode.id+'/{{ $film->slug }}/'+episode.slug" onclick="return false;" :class="{'active':episode.id==thisEpisode.id}" v-on:click="playEpisode($event, index)" v-bind:data-episodeid="episode.id">
+            <a class="item" :href="'{{ route('watch.episode', ['film_id' => $film->id, 'episode_id' => '']) }}/'+episode.id+'/{{ $film->slug }}/'+episode.slug" onclick="return false;" :class="{'active':episode.id==thisEpisode.id}" v-on:click="playEpisode(index)" v-bind:data-episodeid="episode.id">
               <div class="ui equal width grid">
                 <div class="row">
                   <div class="three wide column" style="padding-right:0;" v-if="thisEpisode.thumbnail">
@@ -78,8 +81,8 @@
     </div>
     <div class="row">
       <div class="column">
-        <h1 class="ui blue header">
-          <i class="film icon"></i>
+        <h1 class="ui red header">
+          <i class="film black icon"></i>
           {{ $film->name }}
         </h1>
       </div>
@@ -169,17 +172,23 @@
     },
   });
   $(function() {
-    vjsPlayer = videojs(playerVideo.$el.id);
+    //vjsPlayer = videojs(playerVideo.$el.id);
   });
   var episodeList = new Vue({
     el: '#episode-list',
     mounted: function() {
       $.get("{{ route('api.watch.film', ['film_id' => $film->id]) }}", function(data) {
+        var idx;
         $.each( data, function( i, v ) {
           episodes.push(v);
+          if (v.id === {{ $episode->id }}) {
+            console.log(i);
+            idx = i;
+          }
         });
         var epListWrapper = $(episodeList.$el);
         setTimeout(function() {
+          playEpisode(idx);
           epListWrapper.perfectScrollbar();
           // scrollTop
           var active = epListWrapper.find('.item.active');
@@ -194,42 +203,43 @@
       thisEpisode: thisEpisode,
       episodes: episodes,
     },
-    methods: {
-      playEpisode: function(event, i) {
-        if ((thisEpisode.id === episodes[i].id) && (isAjaxDoing === true))
-        {
-          return;
-        }
-        episodes[i].views++;
-        thisEpisode.id = episodes[i].id;
-        var target = $(event.target).closest('a');
-
-        // Current page Attr change
-        window.history.pushState(this.data, document.title, target.attr('href'));
-        document.title = target.find('h5').text();
-
-        $(playerVideo.$el).closest('.video-js').addClass('vjs-waiting');
-
-        // Start getlink
-        isAjaxDoing = true;
-        $.get("{{ route('api.watch.episode', ['film_id' => $film->id, 'episode_id' => '']) }}/"+thisEpisode.id, function(data) {
-          isAjaxDoing = false;
-          if (data.s === false)
-          {
-            return;
-          }
-          // Update player
-          thisEpisode.src = data['srcs'][0]['src'];
-          $('#'+playerVideo.$el.id).attr('src', thisEpisode.src);
-          thisEpisode.type = 'video/mp4';
-          //vjsPlayer.play();
-        });
-      },
-    },
   });
+  function playEpisode(i)
+  {
+    if ((thisEpisode.id === episodes[i].id) && (isAjaxDoing === true))
+    {
+      return;
+    }
+    episodes[i].views++;
+    thisEpisode.id = episodes[i].id;
+
+    var epListWrapper = $(episodeList.$el);
+    var target = epListWrapper.find('[data-episodeid='+episodes[i].id+']');
+
+    // Current page Attr change
+    window.history.pushState(this.data, document.title, target.attr('href'));
+    document.title = target.find('h5').text();
+
+    $(playerVideo.$el).closest('.video-js').addClass('vjs-waiting');
+
+    // Start getlink
+    isAjaxDoing = true;
+    $.get("{{ route('api.watch.episode', ['film_id' => $film->id, 'episode_id' => '']) }}/"+thisEpisode.id, function(data) {
+      isAjaxDoing = false;
+      if (data.s === false)
+      {
+        return;
+      }
+      // Update player
+      thisEpisode.src = data['srcs'][0]['src'];
+      $('#'+playerVideo.$el.id).attr('src', thisEpisode.src);
+      thisEpisode.type = 'video/mp4';
+      //vjsPlayer.play();
+    });
+  }
   window.onpopstate = function(event) {
     //episodeList.playEpisode(event,10);
-    console.log(JSON.stringify(event.state));
+    //console.log(JSON.stringify(event.state));
     //alert("location: " + document.location + ", state: " + JSON.stringify(event.state));
   };
   </script>
