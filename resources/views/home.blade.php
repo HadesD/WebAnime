@@ -63,7 +63,7 @@
     @foreach ($episodeNewest as $episode)
       <a class="ui red card" href="{{ $film->getRoute() }}">
         @if (strlen($episode->film->thumbnail) > 0)
-          <div class="blurring dimmable image">
+          <div class="blurring dimmable image" style="max-height:150px;overflow:hidden;">
             <div class="ui dimmer">
               <div class="content">
                 <div class="center">
