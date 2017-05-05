@@ -43,7 +43,9 @@ class WatchController extends Controller
 
     if (count($episode) === 0)
     {
-      return $film;
+      return view('watch', [
+        'film'    => $film,
+      ]);
     }
 
     return redirect()->route('watch.episode', [

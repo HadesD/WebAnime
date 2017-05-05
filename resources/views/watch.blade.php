@@ -1,5 +1,9 @@
 @extends('layouts.app.home')
-@section('title', "{$episode->name} - {$film->name}")
+@if (isset($episode))
+  @section('title', "{$episode->name} - {$film->name}")
+@else
+  @section('title', "{$film->name}")
+@endif
 @push('css')
   <link href="{{ asset('libs/video.js/dist/video-js.css') }}" rel="stylesheet" />
   <link href="{{ asset('libs/video.js/dist/skins/videojs-flat-skin.css') }}" rel="stylesheet" />
@@ -50,35 +54,38 @@
 @endpush
 @section('content')
   <!-- Player video and list film -->
+
   <div id="film-wrapper" class="ui equal width internally stackable grid">
-    <div class="row">
-      <div class="column">
-        <video id="player-video" class="hidden video-js vjs-big-play-centered vjs-dark-hades" controls autoplay preload="auto" v-bind:poster="thisEpisode.thumbnail" data-setup="{'playbackRates': [1, 1.5, 2]}" v-bind:src="thisEpisode.src">
-          <source v-bind:src="thisEpisode.src" type="video/mp4" />
-        </video>
-      </div>
-      <div class="four wide column">
-        <div id="episode-list" class="ui vertical small menu">
-          <template v-for="episode, index in episodes">
-            <a class="item" :href="'{{ route('watch.episode', ['film_id' => $film->id, 'episode_id' => '']) }}/'+episode.id+'/{{ $film->slug }}/'+episode.slug" onclick="return false;" :class="{'active':episode.id==thisEpisode.id}" v-on:click="playEpisode(index)" v-bind:data-episodeid="episode.id">
-              <div class="ui equal width grid">
-                <div class="row">
-                  <div class="three wide column" style="padding-right:0;" v-if="thisEpisode.thumbnail">
-                    <img :src="thisEpisode.thumbnail" class="ui rounded image" />
-                  </div>
-                  <div class="column" style="padding-right:5px;">
-                    <div class="ui container" style="margin-bottom: 0px;">
-                      @{{ episode.name }}
+    @if (isset($episode))
+      <div class="row">
+        <div class="column">
+          <video id="player-video" class="hidden video-js vjs-big-play-centered vjs-dark-hades" controls autoplay preload="auto" v-bind:poster="thisEpisode.thumbnail" data-setup="{'playbackRates': [1, 1.5, 2]}" v-bind:src="thisEpisode.src">
+            <source v-bind:src="thisEpisode.src" type="video/mp4" />
+          </video>
+        </div>
+        <div class="four wide column">
+          <div id="episode-list" class="ui vertical small menu">
+            <template v-for="episode, index in episodes">
+              <a class="item" :href="'{{ route('watch.episode', ['film_id' => $film->id, 'episode_id' => '']) }}/'+episode.id+'/{{ $film->slug }}/'+episode.slug" onclick="return false;" :class="{'active':episode.id==thisEpisode.id}" v-on:click="playEpisode(index)" v-bind:data-episodeid="episode.id">
+                <div class="ui equal width grid">
+                  <div class="row">
+                    <div class="three wide column" style="padding-right:0;" v-if="thisEpisode.thumbnail">
+                      <img :src="thisEpisode.thumbnail" class="ui rounded image" />
                     </div>
-                    <small>@lang('watch.views'): @{{ episode.views }}</small>
+                    <div class="column" style="padding-right:5px;">
+                      <div class="ui container" style="margin-bottom: 0px;">
+                        @{{ episode.name }}
+                      </div>
+                      <small>@lang('watch.views'): @{{ number_format(episode.views) }}</small>
+                    </div>
                   </div>
                 </div>
-              </div>
-            </a>
-          </template>
+              </a>
+            </template>
+          </div>
         </div>
       </div>
-    </div>
+    @endif
     <div class="row">
       <div class="column">
         <h1 class="ui red header">
@@ -146,103 +153,117 @@
   </div>
 @endsection
 @push('js')
-  <!--[if lt IE 9]>
-  <script type="text/javascript" src="{{ asset('libs/video.js/dist/ie8/videojs-ie8.min.js') }}"></script>
-  <![endif]-->
-  <script type="text/javascript" src="{{ asset('libs/video.js/dist/video.min.js') }}"></script>
-  <script type="text/javascript">
-  // Autoload
-  var vjsPlayer;
-  var isAjaxDoing = false;
+  @if (isset($episode))
+    <!--[if lt IE 9]>
+    <script type="text/javascript" src="{{ asset('libs/video.js/dist/ie8/videojs-ie8.min.js') }}"></script>
+    <![endif]-->
+    <script type="text/javascript" src="{{ asset('libs/video.js/dist/video.min.js') }}"></script>
+    <script type="text/javascript">
+    // Autoload
+    var vjsPlayer;
+    var isAjaxDoing = false;
 
-  // Ajax
-  var thisEpisode = {
-    id: {{ $episode->id }},
-    //src: 'http://download.blender.org/peach/bigbuckbunny_movies/BigBuckBunny_320x180.mp4',
-    thumbnail: '{{ $film->thumbnail }}',
-    type: '',
-  };
-  var episodes = [];
+    // Ajax
+    var thisEpisode = {
+      id: {{ $episode->id }},
+      //src: 'http://download.blender.org/peach/bigbuckbunny_movies/BigBuckBunny_320x180.mp4',
+      thumbnail: '{{ $film->thumbnail }}',
+      type: '',
+    };
+    var episodes = [];
 
-  // Vue.js Support
-  var playerVideo = new Vue({
-    el: '#player-video',
-    data: {
-      thisEpisode: thisEpisode,
-    },
-  });
-  $(function() {
-    //vjsPlayer = videojs(playerVideo.$el.id);
-  });
-  var episodeList = new Vue({
-    el: '#episode-list',
-    mounted: function() {
-      $.get("{{ route('api.watch.film', ['film_id' => $film->id]) }}", function(data) {
-        var idx;
-        $.each( data, function( i, v ) {
-          episodes.push(v);
-          if (v.id === {{ $episode->id }}) {
-            console.log(i);
-            idx = i;
-          }
+    // Vue.js Support
+    var playerVideo = new Vue({
+      el: '#player-video',
+      data: {
+        thisEpisode: thisEpisode,
+      },
+    });
+    $(function() {
+      //vjsPlayer = videojs(playerVideo.$el.id);
+    });
+    var episodeList = new Vue({
+      el: '#episode-list',
+      mounted: function() {
+        $.get("{{ route('api.watch.film', ['film_id' => $film->id]) }}", function(data) {
+          var idx;
+          $.each( data, function( i, v ) {
+            episodes.push(v);
+            if (v.id === {{ $episode->id }}) {
+              console.log(i);
+              idx = i;
+            }
+          });
+          var epListWrapper = $(episodeList.$el);
+          setTimeout(function() {
+            playEpisode(idx);
+            epListWrapper.perfectScrollbar();
+            // scrollTop
+            var active = epListWrapper.find('.item.active');
+            epListWrapper.scrollTop(active.offset().top - active.offsetParent().offset().top);
+          }, 0);
         });
-        var epListWrapper = $(episodeList.$el);
-        setTimeout(function() {
-          playEpisode(idx);
-          epListWrapper.perfectScrollbar();
-          // scrollTop
-          var active = epListWrapper.find('.item.active');
-          epListWrapper.scrollTop(active.offset().top - active.offsetParent().offset().top);
-        }, 0);
-      });
-    },
-    component: {
-      'template': this,
-    },
-    data: {
-      thisEpisode: thisEpisode,
-      episodes: episodes,
-    },
-  });
-  function playEpisode(i)
-  {
-    if ((thisEpisode.id === episodes[i].id) && (isAjaxDoing === true))
+      },
+      component: {
+        'template': this,
+      },
+      data: {
+        thisEpisode: thisEpisode,
+        episodes: episodes,
+      },
+    });
+    function playEpisode(i)
     {
-      return;
-    }
-    episodes[i].views++;
-    thisEpisode.id = episodes[i].id;
-
-    var epListWrapper = $(episodeList.$el);
-    var target = epListWrapper.find('[data-episodeid='+episodes[i].id+']');
-
-    // Current page Attr change
-    window.history.pushState(this.data, document.title, target.attr('href'));
-    document.title = target.find('h5').text();
-
-    $(playerVideo.$el).closest('.video-js').addClass('vjs-waiting');
-
-    // Start getlink
-    isAjaxDoing = true;
-    $.get("{{ route('api.watch.episode', ['film_id' => $film->id, 'episode_id' => '']) }}/"+thisEpisode.id, function(data) {
-      isAjaxDoing = false;
-      if (data.s === false)
+      if ((thisEpisode.id === episodes[i].id) && (isAjaxDoing === true))
       {
         return;
       }
-      // Update player
-      thisEpisode.src = data['srcs'][0]['src'];
-      $('#'+playerVideo.$el.id).attr('src', thisEpisode.src);
-      thisEpisode.type = 'video/mp4';
-      //vjsPlayer.play();
-    });
-  }
-  window.onpopstate = function(event) {
-    //episodeList.playEpisode(event,10);
-    //console.log(JSON.stringify(event.state));
-    //alert("location: " + document.location + ", state: " + JSON.stringify(event.state));
-  };
-  </script>
+      episodes[i].views++;
+      thisEpisode.id = episodes[i].id;
+
+      var epListWrapper = $(episodeList.$el);
+      var target = epListWrapper.find('[data-episodeid='+episodes[i].id+']');
+
+      // Current page Attr change
+      window.history.pushState(this.data, document.title, target.attr('href'));
+      document.title = target.find('h5').text();
+
+      $(playerVideo.$el).closest('.video-js').addClass('vjs-waiting');
+
+      // Start getlink
+      isAjaxDoing = true;
+      $.get("{{ route('api.watch.episode', ['film_id' => $film->id, 'episode_id' => '']) }}/"+thisEpisode.id, function(data) {
+        isAjaxDoing = false;
+        if (data.s === false)
+        {
+          return;
+        }
+        // Update player
+        thisEpisode.src = data['srcs'][0]['src'];
+        $('#'+playerVideo.$el.id).attr('src', thisEpisode.src);
+        thisEpisode.type = 'video/mp4';
+        //vjsPlayer.play();
+      });
+    }
+    window.onpopstate = function(event) {
+      //episodeList.playEpisode(event,10);
+      //console.log(JSON.stringify(event.state));
+      //alert("location: " + document.location + ", state: " + JSON.stringify(event.state));
+    };
+    function number_format(nStr)
+    {
+    	nStr += '';
+    	x = nStr.split('.');
+    	x1 = x[0];
+    	x2 = x.length > 1 ? '.' + x[1] : '';
+    	var rgx = /(\d+)(\d{3})/;
+    	while (rgx.test(x1)) {
+    		x1 = x1.replace(rgx, '$1' + ',' + '$2');
+    	}
+    	return x1 + x2;
+    }
+    </script>
+  @endif
   <div id="fb-root"></div>
   <script>(function(d, s, id) {
     var js, fjs = d.getElementsByTagName(s)[0];

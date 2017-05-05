@@ -1,6 +1,6 @@
 @extends('layouts.app')
 @section('wrapper')
-  <div class="ui borderless icon menu fluid" style="border-radius:0;border:0;border-top:2px solid #0089ff;">
+  <div class="ui borderless icon menu fluid" style="border-radius:0;border:0;border-top:2px solid #f00;">
     <a class="item icon">
       <i class="content large icon"></i>
     </a>

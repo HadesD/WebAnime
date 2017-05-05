@@ -59,46 +59,52 @@
     @lang('watch.lastest')
   </div>
   <div class="ui five special stackable cards">
-    @foreach ($newestList as $newest)
+    @foreach ($episodeNewest as $episode)
       <div class="ui red card">
         <div class="blurring dimmable image">
           <div class="ui dimmer">
             <div class="content">
               <div class="center">
                 <h4 class="ui inverted header">
-                  @lang('watch.lastest'): {{ $newest->name }}
+                  @lang('watch.lastest'): {{ $episode->name }}
                 </h4>
-                <a class="ui inverted button" href="{{ $newest->getRoute() }}">
+                <a class="ui inverted button" href="{{ $episode->getRoute() }}">
                   @lang('watch.watchnow')
                 </a>
               </div>
             </div>
           </div>
-          <img class="image" src="{{ $newest->film->thumbnail }}" />
+          <img class="image" src="{{ $episode->film->thumbnail }}" />
         </div>
         <div class="content">
-          <a class="header" href="{{ $newest->getRoute() }}">
-            {{ $newest->film->name }}
+          <a class="header" href="{{ $episode->getRoute() }}">
+            {{ $episode->film->name }}
           </a>
         </div>
         <div class="extra content">
           <i class="lightning icon"></i>
-          @lang('watch.views'): {{ $newest->film->views }}
+          @lang('watch.views'): {{ $episode->film->views }}
         </div>
       </div>
-      {{-- <div class="ui red card">
-        <a class="image" style="max-height: 185px;overflow: hidden;" href="{{ route('watch.episode', ['film_id' => $newest->film_id, 'episode_id' => $newest->id]) }}">
-          <img src="{{ $newest->film->thumbnail }}" />
-        </a>
+    @endforeach
+  </div>
+  <div class="ui dividing red header">
+    Anime @lang('watch.lastest')
+  </div>
+  <div class="ui five stackable cards">
+    @foreach ($filmNewest as $film)
+      <div class="ui red card">
+        <img class="image" src="{{ $film->thumbnail }}" />
         <div class="content">
-          <a class="header" href="{{ route('watch.episode', ['film_id' => $newest->film_id, 'episode_id' => $newest->id]) }}">
-            {{ $newest->film->name }}
+          <a class="header" href="{{ $film->getRoute() }}">
+            {{ $film->name }}
           </a>
-          <div class="meta">
-            <a>{{ print_r($newest) }}</a>
-          </div>
         </div>
-      </div> --}}
+        <div class="extra content">
+          <i class="lightning icon"></i>
+          @lang('watch.views'): {{ $film->views }}
+        </div>
+      </div>
     @endforeach
   </div>
 @endsection
