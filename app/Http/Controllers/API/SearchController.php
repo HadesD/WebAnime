@@ -7,8 +7,8 @@ use App\Http\Controllers\Controller;
 
 class SearchController extends Controller
 {
-  public function film($query)
+  public function films($query)
   {
-    return \App\Film::where('name', 'LIKE', "%{$query}%")->limit(5)->get()->makeHidden(['description', 'tags'])->toArray();
+    return \App\Film::where('name', 'LIKE', "%{$query}%")->orderBy('name', 'DECS')->limit(5)->get()->makeHidden(['description', 'tags'])->toArray();
   }
 }
