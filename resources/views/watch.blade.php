@@ -63,7 +63,7 @@
     @if (isset($episode))
       <div class="row">
         <div class="column">
-          <div id="wrapper-video" class="ui loading basic segment" style="padding:0;border-radius:0;"></div>
+          <div id="wrapper-video" class="ui loading black inverted basic segment" style="padding:0;border-radius:0;"></div>
         </div>
         <div class="four wide column">
           <div id="episode-list" class="ui vertical small menu">
@@ -234,7 +234,18 @@
       // Start getlink
       isAjaxDoing = true;
       $.get("{{ route('api.watch.episode', ['film_id' => $film->id, 'episode_id' => '']) }}/"+thisEpisode.id, function(data) {
+        isAjaxDoing = false;
         playerVideo.removeClass('loading');
+        if (data.s === false)
+        {
+          var markup = '<div class="ui basic center aligned segment">'+
+            '<div class="header">'+
+              'Video error!'+
+            '</div>'+
+          '</div>';
+          playerVideo.prepend(markup);
+          return;
+        }
         if (typeof vjsPlayer == "undefined")
         {
           videoPlayer = $("<video />", {
@@ -281,11 +292,6 @@
             $(el).attr('data-inverted', '');
             $(el).removeAttr("title");
           });
-        }
-        isAjaxDoing = false;
-        if (data.s === false)
-        {
-          return;
         }
         // Update player
         thisEpisode.src = data['srcs'][0]['src'];
