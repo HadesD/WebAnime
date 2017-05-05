@@ -21,30 +21,35 @@
   #player-video * {
     outline: 0;
   }
+  #wrapper-video,
   #player-video,
   #episode-list {
     width: 100%;
     height: 460px;
   }
   @media (max-width: 767px) and (min-width: 640px) {
+    #wrapper-video,
     #player-video,
     #episode-list {
       height: 360px;
     }
   }
   @media (max-width: 639px) and (min-width: 480px) {
+    #wrapper-video,
     #player-video,
     #episode-list {
       height: 270px;
     }
   }
   @media (max-width: 639px) and (min-width: 375px) {
+    #wrapper-video,
     #player-video,
     #episode-list {
       height: 211px;
     }
   }
   @media (max-width: 639px) {
+    #wrapper-video,
     #player-video,
     #episode-list {
       height: 180px;
@@ -53,15 +58,11 @@
   </style>
 @endpush
 @section('content')
-  <!-- Player video and list film -->
-
   <div id="film-wrapper" class="ui equal width internally stackable grid">
     @if (isset($episode))
       <div class="row">
         <div class="column">
-          <video id="player-video" class="hidden video-js vjs-big-play-centered vjs-dark-hades" controls autoplay preload="auto" v-bind:poster="thisEpisode.thumbnail" data-setup="{'playbackRates': [1, 1.5, 2]}" v-bind:src="thisEpisode.src">
-            <source v-bind:src="thisEpisode.src" type="video/mp4" />
-          </video>
+          <div id="wrapper-video" class="ui loading basic segment" style="padding:0;border-radius:0;"></div>
         </div>
         <div class="four wide column">
           <div id="episode-list" class="ui vertical small menu">
@@ -164,28 +165,20 @@
     <script type="text/javascript" src="{{ asset('libs/video.js/dist/video.min.js') }}"></script>
     <script type="text/javascript">
     // Autoload
-    var vjsPlayer;
+    var videoPlayer;
     var isAjaxDoing = false;
 
     // Ajax
     var thisEpisode = {
       id: {{ $episode->id }},
-      //src: 'http://download.blender.org/peach/bigbuckbunny_movies/BigBuckBunny_320x180.mp4',
-      thumbnail: '{{ $film->thumbnail }}',
+      // src: 'http://download.blender.org/peach/bigbuckbunny_movies/BigBuckBunny_320x180.mp4',
+      // thumbnail: '{{ $film->thumbnail }}',
       type: '',
     };
     var episodes = [];
 
     // Vue.js Support
-    var playerVideo = new Vue({
-      el: '#player-video',
-      data: {
-        thisEpisode: thisEpisode,
-      },
-    });
-    $(function() {
-      //vjsPlayer = videojs(playerVideo.$el.id);
-    });
+    var playerVideo = $("#wrapper-video");
     var episodeList = new Vue({
       el: '#episode-list',
       mounted: function() {
@@ -222,6 +215,9 @@
       {
         return;
       }
+
+      playerVideo.addClass('loading');
+
       episodes[i].views++;
       thisEpisode.id = episodes[i].id;
 
@@ -232,11 +228,24 @@
       window.history.pushState(this.data, document.title, target.attr('href'));
       document.title = target.find('h5').text();
 
-      $(playerVideo.$el).closest('.video-js').addClass('vjs-waiting');
+      playerVideo.find('.video-js').addClass('vjs-waiting');
 
       // Start getlink
       isAjaxDoing = true;
       $.get("{{ route('api.watch.episode', ['film_id' => $film->id, 'episode_id' => '']) }}/"+thisEpisode.id, function(data) {
+        playerVideo.removeClass('loading');
+        if (typeof vjsPlayer == "undefined")
+        {
+          videoPlayer = $("<video />", {
+            "id": "player-video",
+            "class": "video-js vjs-big-play-centered vjs-dark-hades",
+            "controls": "",
+            "autoplay": "true",
+            "preload": "auto",
+            "poster": "{{ $film->thumbnail }}",
+          });
+          playerVideo.html(videoPlayer);
+        }
         isAjaxDoing = false;
         if (data.s === false)
         {
@@ -244,9 +253,9 @@
         }
         // Update player
         thisEpisode.src = data['srcs'][0]['src'];
-        $('#'+playerVideo.$el.id).attr('src', thisEpisode.src);
         thisEpisode.type = 'video/mp4';
-        //vjsPlayer.play();
+        vjsPlayer = videojs(playerVideo.find('video').attr('id'));
+        vjsPlayer.src({ "type":thisEpisode.type, "src":thisEpisode.src });
       });
     }
     window.onpopstate = function(event) {
