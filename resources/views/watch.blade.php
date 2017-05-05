@@ -124,21 +124,25 @@
               <div class="fb-like" data-href="{{ $film->getRoute() }}" data-layout="button_count" data-action="like" data-show-faces="false" data-share="true"></div>
             </div>
           </div>
-          <div class="item">
-            <i class="tags icon"></i>
-            <div class="content">
-              @foreach ($film->tags as $tag)
-                <a class="ui tag teal label" href="{{ route('tags', ['tag_id' => $tag->id, 'tag_slug' => $tag->slug]) }}">
-                  {{ $tag->name }}
-                </a>
-              @endforeach
+          @if (count($film->tags) > 0)
+            <div class="item">
+              <i class="tags icon"></i>
+              <div class="content">
+                @foreach ($film->tags as $tag)
+                  <a class="ui tag teal label" href="{{ route('tags', ['tag_id' => $tag->id, 'tag_slug' => $tag->slug]) }}">
+                    {{ $tag->name }}
+                  </a>
+                @endforeach
+              </div>
             </div>
+          @endif
+        </div>
+        @if (strlen($film->description) > 0)
+          <div class="ui container">
+            <i class="book icon"></i>
+            {{ $film->description }}
           </div>
-        </div>
-        <div class="ui container">
-          <i class="book icon"></i>
-          {{ $film->description }}
-        </div>
+        @endif
         <div class="ui pointing secondary menu">
           <a class="item active" data-tab="first">
             <i class="facebook icon"></i>

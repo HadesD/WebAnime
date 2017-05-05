@@ -58,53 +58,64 @@
   <div class="ui dividing red header">
     @lang('watch.lastest')
   </div>
-  <div class="ui five special stackable cards">
+  <div class="ui five special stackable link cards">
     @foreach ($episodeNewest as $episode)
-      <div class="ui red card">
-        <div class="blurring dimmable image">
-          <div class="ui dimmer">
-            <div class="content">
-              <div class="center">
-                <h4 class="ui inverted header">
-                  @lang('watch.lastest'): {{ $episode->name }}
-                </h4>
-                <a class="ui inverted button" href="{{ $episode->getRoute() }}">
-                  @lang('watch.watchnow')
-                </a>
+      <a class="ui red card">
+        @if (strlen($episode->film->thumbnail) > 0)
+          <div class="blurring dimmable image" href="{{ $episode->getRoute() }}">
+            <div class="ui dimmer">
+              <div class="content">
+                <div class="center">
+                  <h4 class="ui inverted header">
+                    @lang('watch.lastest'): {{ $episode->name }}
+                  </h4>
+                  <div class="ui inverted button">
+                    @lang('watch.watchnow')
+                  </div>
+                </div>
               </div>
             </div>
+            <img class="image" src="{{ $episode->film->thumbnail }}" />
           </div>
-          <img class="image" src="{{ $episode->film->thumbnail }}" />
-        </div>
+        @endif
         <div class="content">
-          <a class="header" href="{{ $episode->getRoute() }}">
+          <div class="header">
             {{ $episode->film->name }}
-          </a>
+          </div>
         </div>
         <div class="extra content">
           <i class="lightning icon"></i>
           @lang('watch.views'): {{ $episode->film->views }}
         </div>
-      </div>
+      </a>
     @endforeach
   </div>
   <div class="ui dividing red header">
     Anime @lang('watch.lastest')
   </div>
-  <div class="ui five stackable cards">
+  <div class="ui five special stackable link cards">
     @foreach ($filmNewest as $film)
-      <div class="ui red card">
-        <img class="image" src="{{ $film->thumbnail }}" />
-        <div class="content">
-          <a class="header" href="{{ $film->getRoute() }}">
-            {{ $film->name }}
-          </a>
+      <a class="ui red card" href="{{ $film->getRoute() }}">
+        <div class="blurring dimmable image" style="max-height:150px;overflow:hidden;">
+          <div class="ui dimmer">
+            <div class="content">
+              <div class="center">
+                <h4 class="ui inverted header">
+                  {{ $film->name }}
+                </h4>
+                <div type="button" class="ui inverted button">
+                  @lang('watch.watchnow')
+                </div>
+              </div>
+            </div>
+          </div>
+          <img class="images" src="{{ $film->thumbnail }}" />
         </div>
         <div class="extra content">
           <i class="lightning icon"></i>
           @lang('watch.views'): {{ $film->views }}
         </div>
-      </div>
+      </a>
     @endforeach
   </div>
 @endsection
