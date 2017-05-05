@@ -37,3 +37,8 @@ Route::group(['prefix' => 'watch', 'as' => 'watch.'], function() {
 Route::get('/tags/{tag_id}/{tag_slug?}', function (\App\Tag $tag_id, $tag_slug=null) {
   return $tag_id;
 })->where(['tag_id' => '[0-9]+'])->name('tags');
+
+Route::group(['prefix' => 'search', 'as' => 'search.'], function() {
+  Route::post('/films', 'SearchController@postFilms');
+  Route::get('/films/{query?}', 'SearchController@films')->name('film');
+});

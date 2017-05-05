@@ -29,5 +29,5 @@ Route::group(['prefix' => 'watch', 'as' => 'api.watch.'], function() {
 });
 
 Route::group(['prefix' => 'search', 'as' => 'api.search.'], function() {
-  Route::get('/film/{query}', 'API\SearchController@film')->name('film');
+  Route::get('/films/{query}', 'API\SearchController@films')->name('film');
 });

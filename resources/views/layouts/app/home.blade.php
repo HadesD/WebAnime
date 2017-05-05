@@ -11,13 +11,14 @@
       <i class="heartbeat red large icon"></i>
     </a>
     <div class="mobile hidden item">
-      <div id="find-film" class="ui search">
+      <form id="find-film" class="ui search" method="POST" action="{{ route('search.film') }}">
         <div class="ui transparent icon input">
-          <input class="prompt" type="text" placeholder="@lang('navbar.search.type')" />
+          {{ csrf_field() }}
+          <input class="prompt" type="text" name="query" placeholder="@lang('navbar.search.type')" />
           <i class="search large icon"></i>
         </div>
         <div class="ui left aligned container results"></div>
-      </div>
+      </form>
     </div>
     <div class="right menu">
       <a class="mobile only item icon">
