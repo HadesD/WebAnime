@@ -266,7 +266,7 @@
               Button.apply(this, arguments);
             },
             handleClick: function () {
-              if (thisEpisode.idx >= (episodes.length-2)) {
+              if (thisEpisode.idx >= (episodes.length-1)) {
                 this.addClass('vjs-disabled');
                 return;
               }
