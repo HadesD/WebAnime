@@ -180,6 +180,7 @@
       // src: 'http://download.blender.org/peach/bigbuckbunny_movies/BigBuckBunny_320x180.mp4',
       // thumbnail: '{{ $film->thumbnail }}',
       type: '',
+      idx: 0,
     };
     var episodes = [];
 
@@ -189,16 +190,15 @@
       el: '#episode-list',
       mounted: function() {
         $.get("{{ route('api.watch.film', ['film_id' => $film->id]) }}", function(data) {
-          var idx;
           $.each( data, function( i, v ) {
             episodes.push(v);
             if (v.id === {{ $episode->id }}) {
-              idx = i;
+              thisEpisode.idx = i;
             }
           });
           var epListWrapper = $(episodeList.$el);
           setTimeout(function() {
-            playEpisode(idx);
+            playEpisode(thisEpisode.idx);
             epListWrapper.perfectScrollbar();
             // scrollTop
             var active = epListWrapper.find('.item.active');
@@ -225,6 +225,7 @@
 
       episodes[i].views++;
       thisEpisode.id = episodes[i].id;
+      thisEpisode.idx = i;
 
       var epListWrapper = $(episodeList.$el);
       var target = epListWrapper.find('[data-episodeid='+episodes[i].id+']');
@@ -250,6 +251,41 @@
             "poster": "{{ $film->thumbnail }}",
           });
           playerVideo.html(videoPlayer);
+
+          // Buttons
+          vjsPlayer = videojs(playerVideo.find("video").attr("id"));
+          var Button = videojs.getComponent('Button');
+          var nextBtn = videojs.extend(Button, {
+            constructor: function () {
+              Button.apply(this, arguments);
+            },
+            handleClick: function () {
+              if (thisEpisode.idx >= (episodes.length-2)) {
+                this.addClass('vjs-disabled');
+                return;
+              }
+              playEpisode(++thisEpisode.idx);
+            },
+            createEl: function() {
+              return videojs.dom.createEl('button', {
+                className: 'vjs-control vjs-button',
+                innerHTML: '<i class="ui forward large icon"></i>',
+                title: 'Next',
+              });
+            },
+          });
+          videojs.registerComponent('nextBtn', nextBtn);
+          vjsPlayer.getChild('controlBar').addChild('nextBtn', {}, 1);
+
+          $.each(playerVideo.find("button"), function(index, el) {
+            if ($(el).attr('data-tooltip') !== undefined)
+            {
+              return;
+            }
+            $(el).attr("data-tooltip", $(el).attr("title"));
+            $(el).attr('data-inverted', '');
+            $(el).removeAttr("title");
+          });
         }
         isAjaxDoing = false;
         if (data.s === false)
@@ -259,17 +295,7 @@
         // Update player
         thisEpisode.src = data['srcs'][0]['src'];
         thisEpisode.type = 'video/mp4';
-        vjsPlayer = videojs(playerVideo.find("video").attr("id"));
         vjsPlayer.src({ "type":thisEpisode.type, "src":thisEpisode.src });
-        $.each(playerVideo.find("button"), function(index, el) {
-          if ($(el).attr('data-tooltip') !== undefined)
-          {
-            return;
-          }
-          $(el).attr("data-tooltip", $(el).attr("title"));
-          $(el).attr('data-inverted', '');
-          $(el).removeAttr("title");
-        });
       });
     }
     window.onpopstate = function(event) {
