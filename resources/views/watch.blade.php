@@ -164,11 +164,6 @@
     <script type="text/javascript" src="{{ asset('libs/video.js/dist/ie8/videojs-ie8.min.js') }}"></script>
     <![endif]-->
     <script type="text/javascript" src="{{ asset('libs/video.js/dist/video.min.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('libs/video.js/easybits-videojs-thumbnails/easybits-helper.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('libs/video.js/easybits-videojs-thumbnails/easybits-multistreaming.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('libs/video.js/easybits-videojs-thumbnails/jdataview.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('libs/video.js/easybits-videojs-thumbnails/easybits-mp4.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('libs/video.js/easybits-videojs-thumbnails/easybits-videojs-thumbnails.js') }}"></script>
     <script type="text/javascript">
     // Autoload
     var videoPlayer;
@@ -315,12 +310,6 @@
     	}
     	return x1 + x2;
     }
-    var easybits_FplScrubber = {
-			swfgeneratorurl:"{{ asset('libs/video.js/easybits-videojs-thumbnails/easybits-topng.swf') }}",
-      loaders:["{{ asset('libs/video.js/easybits-videojs-thumbnails/easybits-httpstreaming.html') }}"],
-			width:160,
-			height:90
-		};
     </script>
   @endif
   <div id="fb-root"></div>
