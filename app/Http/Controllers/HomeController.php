@@ -42,10 +42,16 @@ class HomeController extends Controller
       ->limit(10)
       ->get();
 
+    $filmUpdate = Film::whereNotNull('thumbnail')
+      ->orderBy('updated_at', 'DESC')
+      ->limit(10)
+      ->get();
+
     return view('home', [
       'carousel' => $carousel,
       'episodeNewest' => $episodeNewest,
       'filmNewest' => $filmNewest,
+      'filmUpdate' => $filmUpdate,
     ]);
   }
 }

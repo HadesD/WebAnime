@@ -56,6 +56,7 @@
     </div>
   </div>
   <div class="ui dividing red header">
+    @lang('watch.episode')
     @lang('watch.lastest')
   </div>
   <div class="ui five special stackable link cards">
@@ -91,10 +92,40 @@
     @endforeach
   </div>
   <div class="ui dividing red header">
-    Anime @lang('watch.lastest')
+    @lang('watch.film')
+    @lang('watch.lastest')
   </div>
   <div class="ui five special stackable link cards">
     @foreach ($filmNewest as $film)
+      <a class="ui red card" href="{{ $film->getRoute() }}">
+        <div class="blurring dimmable image" style="max-height:150px;overflow:hidden;">
+          <div class="ui dimmer">
+            <div class="content">
+              <div class="center">
+                <h4 class="ui inverted header">
+                  {{ $film->name }}
+                </h4>
+                <div type="button" class="ui inverted button">
+                  @lang('watch.watchnow')
+                </div>
+              </div>
+            </div>
+          </div>
+          <img class="images" src="{{ $film->thumbnail }}" />
+        </div>
+        <div class="extra content">
+          <i class="lightning icon"></i>
+          @lang('watch.views'): {{ $film->views }}
+        </div>
+      </a>
+    @endforeach
+  </div>
+  <div class="ui dividing red header">
+    @lang('watch.film')
+    @lang('watch.update')
+  </div>
+  <div class="ui five special stackable link cards">
+    @foreach ($filmUpdate as $film)
       <a class="ui red card" href="{{ $film->getRoute() }}">
         <div class="blurring dimmable image" style="max-height:150px;overflow:hidden;">
           <div class="ui dimmer">
