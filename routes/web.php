@@ -35,7 +35,10 @@ Route::group(['prefix' => 'watch', 'as' => 'watch.'], function() {
 });
 
 Route::get('/tags/{tag_id}/{tag_slug?}', function (\App\Tag $tag_id, $tag_slug=null) {
-  return $tag_id;
+  return view('tags', [
+    'tag' => $tag_id,
+    'films' => $tag_id->films()->paginate(20),
+  ]);
 })->where(['tag_id' => '[0-9]+'])->name('tags');
 
 Route::group(['prefix' => 'search', 'as' => 'search.'], function() {

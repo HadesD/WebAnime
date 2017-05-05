@@ -63,7 +63,7 @@
     @foreach ($episodeNewest as $episode)
       <a class="ui red card" href="{{ $film->getRoute() }}">
         @if (strlen($episode->film->thumbnail) > 0)
-          <div class="blurring dimmable image" href="{{ $episode->getRoute() }}">
+          <div class="blurring dimmable image">
             <div class="ui dimmer">
               <div class="content">
                 <div class="center">
@@ -153,9 +153,6 @@
 @push('js')
   <script type="text/javascript" src="{{ asset('libs/OwlCarousel2/dist/owl.carousel.min.js') }}"></script>
   <script type="text/javascript">
-    $('.special.cards .image').dimmer({
-      on: 'hover'
-    });
     $(function() {
       $("#owl-demo").owlCarousel({
         autoplay: true,

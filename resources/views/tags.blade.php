@@ -1,18 +1,18 @@
 @extends('layouts.app.home')
 @section('content')
   <div class="ui dividing red header">
-    @lang('home.search')
+    @lang('home.tags'): {{ $tag->name }}
   </div>
   <div class="ui five special stackable link cards">
-    @foreach ($results as $result)
-      <a class="ui red card" href="{{ $result->getRoute() }}">
-        @if (strlen($result->thumbnail) > 0)
-          <div class="blurring dimmable image" href="{{ $result->getRoute() }}" style="max-height:150px;overflow:hidden;">
+    @foreach ($films as $film)
+      <a class="ui red card" href="{{ $film->getRoute() }}">
+        @if (strlen($film->thumbnail) > 0)
+          <div class="blurring dimmable image" href="{{ $film->getRoute() }}" style="max-height:150px;overflow:hidden;">
             <div class="ui dimmer">
               <div class="content">
                 <div class="center">
                   <h4 class="ui inverted header">
-                    @lang('watch.lastest'): {{ $result->name }}
+                    @lang('watch.lastest'): {{ $film->name }}
                   </h4>
                   <div class="ui inverted button">
                     @lang('watch.watchnow')
@@ -20,20 +20,20 @@
                 </div>
               </div>
             </div>
-            <img class="image" src="{{ $result->thumbnail }}" />
+            <img class="image" src="{{ $film->thumbnail }}" />
           </div>
         @endif
         <div class="content">
           <div class="header">
-            {{ $result->name }}
+            {{ $film->name }}
           </div>
         </div>
         <div class="extra content">
           <i class="lightning icon"></i>
-          @lang('watch.views'): {{ $result->views }}
+          @lang('watch.views'): {{ $film->views }}
         </div>
       </a>
     @endforeach
   </div>
-  {{ $results->links('vendor.pagination.semantic-ui') }}
+  {{ $films->links('vendor.pagination.semantic-ui') }}
 @endsection

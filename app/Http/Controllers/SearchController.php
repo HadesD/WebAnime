@@ -14,7 +14,7 @@ class SearchController extends Controller
   }
   public function films($query)
   {
-    $rs = \App\Film::where('name', 'LIKE', "%{$query}%")->orderBy('name', 'DECS')->paginate(5);
+    $rs = \App\Film::where('name', 'LIKE', "%{$query}%")->orderBy('name', 'DECS')->paginate(20);
 
     return view('search', [
       'results' => $rs,
