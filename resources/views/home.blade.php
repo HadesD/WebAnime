@@ -61,7 +61,7 @@
   </div>
   <div class="ui five special stackable link cards">
     @foreach ($episodeNewest as $episode)
-      <a class="ui red card">
+      <a class="ui red card" href="{{ $film->getRoute() }}">
         @if (strlen($episode->film->thumbnail) > 0)
           <div class="blurring dimmable image" href="{{ $episode->getRoute() }}">
             <div class="ui dimmer">

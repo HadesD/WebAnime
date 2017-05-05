@@ -7,6 +7,7 @@
 @push('css')
   <link href="{{ asset('libs/video.js/dist/video-js.css') }}" rel="stylesheet" />
   <link href="{{ asset('libs/video.js/dist/skins/videojs-flat-skin.css') }}" rel="stylesheet" />
+  <link href="{{ asset('libs/video.js/dist/skins/dark-hades.css') }}" rel="stylesheet" />
   <style type="text/css">
   #film-wrapper > .row > .column {
     padding-left:0;
@@ -163,6 +164,11 @@
     <script type="text/javascript" src="{{ asset('libs/video.js/dist/ie8/videojs-ie8.min.js') }}"></script>
     <![endif]-->
     <script type="text/javascript" src="{{ asset('libs/video.js/dist/video.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('libs/video.js/easybits-videojs-thumbnails/easybits-helper.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('libs/video.js/easybits-videojs-thumbnails/easybits-multistreaming.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('libs/video.js/easybits-videojs-thumbnails/jdataview.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('libs/video.js/easybits-videojs-thumbnails/easybits-mp4.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('libs/video.js/easybits-videojs-thumbnails/easybits-videojs-thumbnails.js') }}"></script>
     <script type="text/javascript">
     // Autoload
     var videoPlayer;
@@ -187,7 +193,6 @@
           $.each( data, function( i, v ) {
             episodes.push(v);
             if (v.id === {{ $episode->id }}) {
-              console.log(i);
               idx = i;
             }
           });
@@ -254,8 +259,17 @@
         // Update player
         thisEpisode.src = data['srcs'][0]['src'];
         thisEpisode.type = 'video/mp4';
-        vjsPlayer = videojs(playerVideo.find('video').attr('id'));
+        vjsPlayer = videojs(playerVideo.find("video").attr("id"));
         vjsPlayer.src({ "type":thisEpisode.type, "src":thisEpisode.src });
+        $.each(playerVideo.find("button"), function(index, el) {
+          if ($(el).attr('data-tooltip') !== undefined)
+          {
+            return;
+          }
+          $(el).attr("data-tooltip", $(el).attr("title"));
+          $(el).attr('data-inverted', '');
+          $(el).removeAttr("title");
+        });
       });
     }
     window.onpopstate = function(event) {
@@ -275,6 +289,12 @@
     	}
     	return x1 + x2;
     }
+    var easybits_FplScrubber = {
+			swfgeneratorurl:"{{ asset('libs/video.js/easybits-videojs-thumbnails/easybits-topng.swf') }}",
+      loaders:["{{ asset('libs/video.js/easybits-videojs-thumbnails/easybits-httpstreaming.html') }}"],
+			width:160,
+			height:90
+		};
     </script>
   @endif
   <div id="fb-root"></div>

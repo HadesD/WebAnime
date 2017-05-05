@@ -1,0 +1,21 @@
+.vjs-dark-hades .vjs-progress-control{
+  position: absolute;
+  top: -5px;
+  left: 0;
+  right: 0;
+  width: auto;
+  height: 5px;
+}
+.vjs-dark-hades .vjs-progress-control:hover .vjs-progress-holder{
+  font-size: 2.3em;
+}
+.vjs-dark-hades .vjs-control-bar{
+  background: -webkit-linear-gradient(transparent, #000); /* For Safari 5.1 to 6.0 */
+  background: -o-linear-gradient(transparent, #000); /* For Opera 11.1 to 12.0 */
+  background: -moz-linear-gradient(transparent, #000); /* For Firefox 3.6 to 15 */
+  background: linear-gradient(transparent, #000); /* Standard syntax */
+}
+.vjs-dark-hades .vjs-fullscreen-control{
+  position: absolute;
+  right:0;
+}
