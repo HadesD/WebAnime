@@ -10,6 +10,9 @@
     <a class="item icon" href="{{ route('watch.index') }}">
       <i class="heartbeat red large icon"></i>
     </a>
+    <a class="item icon" id="navbar-close-search" style="display:none;">
+      <i class="remove large icon"></i>
+    </a>
     <div class="mobile hidden item">
       <form id="find-film" class="ui search" method="POST" action="{{ route('search.film') }}">
         <div class="ui transparent icon input">
@@ -21,7 +24,7 @@
       </form>
     </div>
     <div class="right menu">
-      <a class="mobile only item icon">
+      <a class="mobile only item icon" id="navbar-open-search">
         <i class="search large icon"></i>
       </a>
       <a class="item icon">
@@ -98,5 +101,16 @@
       },
       minCharacters : 2
     });
+    $(document).on('click', '#navbar-open-search', function(event) {
+      $(this).closest('.ui.menu').find('a').not('#navbar-close-search').fadeOut('fast', function(){
+        $('#navbar-close-search').fadeIn('fast');
+        $('#find-film').closest('.item').removeClass('hidden').slideDown();
+      });
+    }).on('click', '#navbar-close-search', function(event) {
+      $('#find-film').closest('.item').addClass('hidden').hide();
+      $(this).fadeOut('fast', function(){
+        $('#navbar-close-search').closest('.ui.menu').find('a').not('#navbar-close-search').fadeIn('fast');
+      });
+    });;
   </script>
 @endpush
