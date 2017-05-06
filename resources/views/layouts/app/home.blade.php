@@ -14,7 +14,7 @@
       <form id="find-film" class="ui search" method="POST" action="{{ route('search.film') }}">
         <div class="ui transparent icon input">
           {{ csrf_field() }}
-          <input class="prompt" type="text" name="query" placeholder="@lang('navbar.search.type')" />
+          <input class="prompt" type="text" name="query" value="{{ old('query') }}" placeholder="@lang('navbar.search.type')" />
           <i class="search large icon"></i>
         </div>
         <div class="ui left aligned container results"></div>
@@ -71,11 +71,14 @@
       apiSettings: {
         url: '{{ route('api.search.film', ['query'=>'']) }}/{query}',
         onResponse: function(data) {
-          var
-            response = {
-              results : []
-            }
-          ;
+          console.log();
+          var response = {
+            results : [],
+            action : {
+              url: '{{ route('search.film', ['query'=>'']) }}/'+$("#find-film :input[name=query]").val(),
+              text: 'View all results',
+            },
+          };
           // translate GitHub API response to work with search
           $.each(data, function(index, item) {
             var maxResults = 8;
