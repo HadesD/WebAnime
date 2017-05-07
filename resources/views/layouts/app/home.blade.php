@@ -27,12 +27,87 @@
       <a class="mobile only item icon" id="navbar-open-search">
         <i class="search large icon"></i>
       </a>
-      <a class="item icon">
-        <i class="alarm large icon"></i>
-      </a>
-      <a class="item icon">
-        <i class="user large icon"></i>
-      </a>
+      @if (Auth::check())
+        <div class="ui icon top right pointing inline dropdown item">
+          <i class="alarm large icon"></i>
+          <div class="menu">
+            <div class="ui feed">
+              <div class="item">
+                <a class="event">
+                  <div class="label">
+                    <img src="/images/avatar/small/elliot.jpg">
+                  </div>
+                  <div class="content">
+                    <div class="summary">
+                      <a class="user">
+                        Elliot Fu
+                      </a> added you as a friend
+                      <div class="date">
+                        1 Hour Ago
+                      </div>
+                    </div>
+                    <div class="meta">
+                      <a class="like">
+                        <i class="like icon"></i> 4 Likes
+                      </a>
+                    </div>
+                  </div>
+                </a>
+              </div>
+              <div class="item">
+                <a class="event">
+                  <div class="label">
+                    <img src="/images/avatar/small/elliot.jpg">
+                  </div>
+                  <div class="content">
+                    <div class="summary">
+                      <a class="user">
+                        Elliot Fu
+                      </a> added you as a friend
+                      <div class="date">
+                        1 Hour Ago
+                      </div>
+                    </div>
+                    <div class="meta">
+                      <a class="like">
+                        <i class="like icon"></i> 4 Likes
+                      </a>
+                    </div>
+                  </div>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <a class="item icon">
+          <i class="user large icon"></i>
+        </a>
+      @else
+        <a class="item" href="{{ route('login') }}" onclick="$('#loginModal').modal('show');return false;">
+          <i class="user large icon"></i>
+          <span class="mobile hidden">
+            @lang('app.login')
+          </span>
+        </a>
+        <form class="ui modal" id="loginModal" method="POST" action="">
+          <div class="header">
+            @lang('app.login')
+          </div>
+          <div class="content">
+            <p></p>
+          </div>
+          <div class="actions">
+            <div class="ui approve blue button">@lang('app.login')</div>
+            <div class="ui cancel red button">@lang('app.cancel')</div>
+          </div>
+        </form>
+        <a class="item" href="{{ route('register') }}">
+          <i class="add user large icon"></i>
+          <span class="mobile hidden">
+            @lang('app.register')
+          </span>
+        </a>
+      @endif
     </div>
   </div>
   @yield('under.navbar')
@@ -70,6 +145,7 @@
 @endsection
 @push('js')
   <script type="text/javascript">
+    // Search form
     $('#find-film').search({
       apiSettings: {
         url: '{{ route('api.search.film', ['query'=>'']) }}/{query}',
@@ -101,16 +177,19 @@
       },
       minCharacters : 2
     });
+    // Search on Responsive
     $(document).on('click', '#navbar-open-search', function(event) {
-      $(this).closest('.ui.menu').find('a').not('#navbar-close-search').fadeOut('fast', function(){
+      $(this).closest('.ui.menu').find('a, .ui.dropdown').not('#navbar-close-search').fadeOut('fast', function(){
         $('#navbar-close-search').fadeIn('fast');
         $('#find-film').closest('.item').removeClass('hidden').slideDown();
       });
     }).on('click', '#navbar-close-search', function(event) {
       $('#find-film').closest('.item').addClass('hidden').hide();
       $(this).fadeOut('fast', function(){
-        $('#navbar-close-search').closest('.ui.menu').find('a').not('#navbar-close-search').fadeIn('fast');
+        $('#navbar-close-search').closest('.ui.menu').find('a,.ui.dropdown').not('#navbar-close-search').fadeIn('fast');
       });
-    });;
+    });
+    // Login Modal
+
   </script>
 @endpush
